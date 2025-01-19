@@ -18,7 +18,7 @@ export default function LogIn() {
       <button className="buttons" onClick={handleLogInClick}>
         Log in
       </button>
-      <button className="buttons">Sign up</button>
+      <button className="buttons" onClick={handleLogInClick}>Sign up</button>
     </div>
   );
 }

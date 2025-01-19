@@ -4,6 +4,16 @@ const UserChallenge = require('../models/UserChallenge');
 const Challenge = require('../models/Challenge');
 const router = express.Router();
 
+// Health check endpoint
+router.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
+// Root endpoint for health check
+router.get('/', (req, res) => {
+    res.status(200).send('Server is running');
+});
+
 // Endpoint to create a user
 router.post('/user/create', async (req, res) => {
     try {
@@ -31,8 +41,8 @@ router.get('/user/:username', async (req, res) => {
 router.post('/user/addFriend', async (req, res) => {
     try{
         const { userUsername, friendUsername } = req.body;
-        const user = await User.findOne(u => u.username === userUsername);
-        const friend = await User.findOne(u => u.username === friendUsername);
+        const user = await User.findOne( { username: userUsername } );
+        const friend = await User.findOne({username: friendUsername});
 
         if (!user || !friend) {
             return res.status(404).json('User or friend not found');
@@ -61,7 +71,8 @@ router.put('/user/updateChallenge', async (req, res) => {
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
 
-        const userChallenge = user.challenges.find((uc) => uc.challengeId === challengeId);
+        const userChallengeId = user.challenges.find((uc) => uc.challengeId === challengeId);
+        const userChallenge = UserChallenge.findOne({_id: userChallengeId})
         if (!userChallenge)
             return res.status(404).json({ error: 'Challenge not found for this user' });
 
@@ -70,6 +81,8 @@ router.put('/user/updateChallenge', async (req, res) => {
         userChallenge.answer = answer;
         userChallenge.doc = doc;
         userChallenge.completedTime = completedTime;
+
+        await userChallenge.save();
 
         const dbChallenge = await Challenge.findOne({ _id: challengeId })
         if (!dbChallenge)
@@ -81,7 +94,6 @@ router.put('/user/updateChallenge', async (req, res) => {
         await user.save()
 
         const response = {
-            username: user.username,
             points: user.points,
             challenge: {
                 title: dbChallenge.title,
@@ -110,7 +122,8 @@ router.get('/user/:username/challenge/:challengeId', async (req, res) => {
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
 
-        const challenge = user.challenges.find((uc) => uc.challengeId === challengeId);
+        const userChallengeId = user.challenges.find((uc) => uc.challengeId === challengeId);
+        const challenge = UserChallenge.findOne({_id: userChallengeId})
         res.status(200).json(challenge);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -118,9 +131,9 @@ router.get('/user/:username/challenge/:challengeId', async (req, res) => {
 });
 
 // Endpoint to get specific (today's) challenge
-router.get('/challenge/:challengeId', async (req, res) => {
+router.get('/challenge', async (req, res) => {
     try {
-        const challenge = await Challenge.findOne({ _id: req.params.challengeId });
+        const challenge = await Challenge.findOne().sort({ createdAt: -1 });
         if (!challenge) 
             return res.status(404).json({ error: 'Challenge not found' });
 
@@ -129,6 +142,7 @@ router.get('/challenge/:challengeId', async (req, res) => {
             description: challenge.description,
             pointsReward: challenge.pointsReward,
             isActive: challenge.isActive,
+            createdAt: challenge.createdAt,
             endDate: challenge.endDate,
             challengeId: challenge._id
         }
@@ -141,8 +155,8 @@ router.get('/challenge/:challengeId', async (req, res) => {
 // Endpoint to get all challenges
 router.get('/challenges', async (req, res) => {
     try {
-        const challenges = await Challenge.find({}, { title, description, pointsReward,
-                                                        isActive, endDate, _id });
+        const challenges = await Challenge.find({}, { title: 1, description: 1, pointsReward: 1,
+                                                        isActive: 1, createdAt: 1, endDate: 1, _id: 1 });
         res.status(200).json(challenges);
     } catch (err) {
         res.status(500).json({ error: err.message });

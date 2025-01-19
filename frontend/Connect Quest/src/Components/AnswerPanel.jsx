@@ -22,6 +22,7 @@ export default function AnswerPanel({points}) {
       };
     
       const handleCapture = () => {
+        setIsEditing(false);
         const captureInput = document.createElement("input");
         captureInput.type = "file";
         captureInput.accept = "image/*";
@@ -52,7 +53,7 @@ export default function AnswerPanel({points}) {
               Enter your answer
             </button>
             <button className="answerButton" onClick={handleCapture}>
-              Capture a pic!
+              Upload photo!
             </button>
           </div>
           {popupVisible && (
@@ -66,7 +67,7 @@ export default function AnswerPanel({points}) {
           {isEditing && <input type="text" onKeyDown={handleKeyDown} />}
           {image && (
             <div>
-              <h3>Preview:</h3>
+              <h3 id = "preview">Preview:</h3>
               <img
                 src={image}
                 alt="Preview"

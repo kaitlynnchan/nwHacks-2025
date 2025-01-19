@@ -1,9 +1,9 @@
 import "./AnswerPanel.css";
 import { useState } from "react";
 
-export default function AnswerPanel() {
+export default function AnswerPanel({points}) {
     const [isEditing, setIsEditing] = useState(false);
-    const [points, setPoints] = useState(0); 
+    const [initalPoints, setPoints] = useState(0); 
     const [popupVisible, setPopupVisible] = useState(false);
     const [image, setImage] = useState(null);//
 
@@ -13,7 +13,7 @@ export default function AnswerPanel() {
           const reader = new FileReader();
           reader.onloadend = () => {
             setImage(reader.result);
-            setPoints((prevPoints) => prevPoints + 10); // Add points for uploading a photo
+            setPoints(points);  // Add points for uploading a photo
             setPopupVisible(true);
             setTimeout(() => setPopupVisible(false), 3000);
           };
@@ -38,7 +38,7 @@ export default function AnswerPanel() {
     
       const handleKeyDown = (event) => {
         if (event.key === "Enter") {
-          setPoints((prevPoints) => prevPoints + 10);
+          setPoints(points); 
           setIsEditing(false);
           setPopupVisible(true);
     
@@ -77,7 +77,7 @@ export default function AnswerPanel() {
           )}
           <div id="pointsDisplay">
             <h1 className="points">Total points</h1>
-            <h1 className="points">{points}</h1>
+            <h1 className="points">{initalPoints}</h1>
           </div>
         </div>
       );

@@ -20,3 +20,22 @@
 .buttons:hover{
     box-shadow: 5px 10px #fcaf42;
 }
+
+
+#title {
+    color: #fcaf42;  
+    text-align: center; 
+    font-size: 3rem; 
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+  }
+  
+  
+  #logo {
+    height: 5rem; 
+    width: 5rem; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  

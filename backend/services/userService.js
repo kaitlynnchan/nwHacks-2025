@@ -14,9 +14,9 @@ async function sendChallengeToUsers(challenge) {
                 doc: '',
                 completedTime: null
             });
-            // await newUserChallenge.save();
+            await newUserChallenge.save();
 
-            user.challenges.push(newUserChallenge);
+            user.challenges.push(newUserChallenge._id);
             await user.save();
         }
 

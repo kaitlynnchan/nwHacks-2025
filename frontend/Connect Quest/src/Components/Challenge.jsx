@@ -1,5 +1,7 @@
 import "./Challenge.css";
 import AnswerPanel from "./AnswerPanel";
+import ButtonHeader from "./ButtonHeader.jsx";
+import "./ButtonHeader.css";
 const challenges = ["Ask somebody for their favourite colour", "Take a picture of a unique tree", 
     "Ask someone about their day"];
 
@@ -11,6 +13,7 @@ export default function Challenge() {
     const challenge = challenges[genRandomInt(2)];
     return (
         <div>
+        <ButtonHeader></ButtonHeader>
         <div>
             <div id = "answerDiv">
                 <h1 className = "dailyChallenge">Todays challenge is...</h1>

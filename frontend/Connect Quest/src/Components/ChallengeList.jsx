@@ -1,5 +1,8 @@
 import React from "react";
 import "./ChallengeList.css";
+import ButtonHeader from "./ButtonHeader.jsx";
+import "./ButtonHeader.css";
+
 
 const ChallengeList = () => {
   // Sample challenges/quests data
@@ -23,6 +26,7 @@ const ChallengeList = () => {
 
   return (
     <div>
+      <ButtonHeader></ButtonHeader>
       <h1 id = "page-title">Challenge List</h1>
       <ul>
         {challenges.map((challenge) => (

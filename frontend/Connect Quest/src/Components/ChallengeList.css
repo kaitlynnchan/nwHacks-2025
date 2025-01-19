@@ -13,7 +13,7 @@ ul {
 
 .challenge-item {
     color: #e6921d;
-    padding: 40px;
+    padding: 1.5rem; 
     margin: 20px;
     font-size: 1.1rem; 
     border: 2px solid #e6921d;
@@ -33,8 +33,11 @@ ul {
   
 .challenge-name {
     font-weight: bold;
+    font-size: 1rem; 
 }
   
   .challenge-status {
     color: #555;
+    font-size: 0.75rem; 
+    text-align: center; 
 }

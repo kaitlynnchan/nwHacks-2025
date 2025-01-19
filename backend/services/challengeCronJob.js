@@ -4,7 +4,7 @@ const { sendChallengeToUsers } = require('./userService');  // The function to s
 
 // Schedule a task to create and send a new challenge every few mins
 const scheduleChallengeCron = () => {
-    cron.schedule('20 * * * *', async () => {
+    cron.schedule('10 * * * *', async () => {
         try {
             // create random challenge
             const challenge = await createRandomChallenge();

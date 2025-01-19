@@ -18,6 +18,12 @@ export default function ButtonHeader() {
 
     return(
         <div id = "headerButtons">
+          <button
+            className="headerbutton"
+            onClick={handleHomeClick}
+          >
+            Log out
+          </button>
           {location.pathname === "/daily" ? (
             // Show only "Challenge List" button on /daily
             <button
@@ -28,22 +34,6 @@ export default function ButtonHeader() {
             </button>
           ) : (
               <>
-                {/* Conditional first button */}
-                {location.pathname === "/challenges" ? (
-                  <button
-                    className="headerbutton"
-                    onClick={handleHomeClick}
-                  >
-                    Log out
-                  </button>
-                ) : (
-                  <button
-                    className="headerbutton"
-                    onClick={handleListClick}
-                  >
-                    Challenge List
-                  </button>
-                )}
 
                 {/* Static second button */}
                   <button

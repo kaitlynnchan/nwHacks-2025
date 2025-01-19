@@ -15,7 +15,7 @@ connectDB();
 
 challengeCronJob();
 
-app.use('/', routes);
+app.use('/api/', routes);
 
 app.listen(PORT, () => {
     console.log('Server started on port 3000');

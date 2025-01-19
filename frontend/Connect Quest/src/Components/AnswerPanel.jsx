@@ -5,37 +5,79 @@ export default function AnswerPanel() {
     const [isEditing, setIsEditing] = useState(false);
     const [points, setPoints] = useState(0); 
     const [popupVisible, setPopupVisible] = useState(false);
-    function handleClick() {
-        setIsEditing(true); 
-      }
+    const [image, setImage] = useState(null);//
 
-    function handleKeyDown(event) {
-        if (event.key === "Enter") {
-            setPoints((prevPoints) => prevPoints + 10);
-            setIsEditing(false); 
-
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImage(reader.result);
+            setPoints((prevPoints) => prevPoints + 10); // Add points for uploading a photo
             setPopupVisible(true);
-
             setTimeout(() => setPopupVisible(false), 3000);
+          };
+          reader.readAsDataURL(file);
         }
-    }
-
-    return(
-        <div id = "answerspace">
-        <div id = "answerButtons">
-            <button className = "answerButton" onClick = {handleClick}>Enter your answer</button>
-            <button className = "answerButton">Snap a pic!</button>
-        </div>
-        {popupVisible && (
-                <div className="popup">
-                    <p id = "popupMessage">Congratulations! <br></br>You have completed todays connect quest challenge.</p>
-                </div>
-            )}
-            {isEditing && <input type = "text" onKeyDown={handleKeyDown} />}
-            <div id = "pointsDisplay">
-                <h1 className = "points">Total points</h1>
-                <h1 className = "points">{points}</h1>
+      };
+    
+      const handleCapture = () => {
+        const captureInput = document.createElement("input");
+        captureInput.type = "file";
+        captureInput.accept = "image/*";
+        captureInput.capture = "environment"; // Trigger the camera on mobile
+    
+        captureInput.onchange = handleFileChange;
+        captureInput.click(); // Trigger the file input dialog to open the camera
+      };
+    
+      const handleClick = () => {
+        setIsEditing(true);
+      };
+    
+      const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+          setPoints((prevPoints) => prevPoints + 10);
+          setIsEditing(false);
+          setPopupVisible(true);
+    
+          setTimeout(() => setPopupVisible(false), 3000);
+        }
+      };
+    
+      return (
+        <div id="answerspace">
+          <div id="answerButtons">
+            <button className="answerButton" onClick={handleClick}>
+              Enter your answer
+            </button>
+            <button className="answerButton" onClick={handleCapture}>
+              Capture a pic!
+            </button>
+          </div>
+          {popupVisible && (
+            <div className="popup">
+              <p id="popupMessage">
+                Congratulations! <br />
+                You have completed today's Connect Quest challenge.
+              </p>
             </div>
+          )}
+          {isEditing && <input type="text" onKeyDown={handleKeyDown} />}
+          {image && (
+            <div>
+              <h3>Preview:</h3>
+              <img
+                src={image}
+                alt="Preview"
+                style={{ width: "100%", maxWidth: "300px", marginTop: "10px" }}
+              />
+            </div>
+          )}
+          <div id="pointsDisplay">
+            <h1 className="points">Total points</h1>
+            <h1 className="points">{points}</h1>
+          </div>
         </div>
-    )
-}
+      );
+    }

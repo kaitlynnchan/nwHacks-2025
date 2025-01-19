@@ -22,6 +22,7 @@ export default function AnswerPanel() {
       };
     
       const handleCapture = () => {
+        setIsEditing(false);
         const captureInput = document.createElement("input");
         captureInput.type = "file";
         captureInput.accept = "image/*";
@@ -66,7 +67,7 @@ export default function AnswerPanel() {
           {isEditing && <input type="text" onKeyDown={handleKeyDown} />}
           {image && (
             <div>
-              <h3>Preview:</h3>
+              <h3 id = "preview">Preview:</h3>
               <img
                 src={image}
                 alt="Preview"

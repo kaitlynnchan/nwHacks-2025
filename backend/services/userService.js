@@ -1,12 +1,11 @@
-const User = require('./models/User');
-const UserChallenge = require('./models/UserChallenge');
+const User = require('../models/User');
+const UserChallenge = require('../models/UserChallenge');
 
 async function sendChallengeToUsers(challenge) {
     try {
-        // Get all users
-        const users = await User.find();
+        const users = await User.find({});
 
-        // Create a UserChallenge for each user and add it to their profile
+        // create a UserChallenge for each user and add it to their profile
         for (let user of users) {
             const newUserChallenge = new UserChallenge({
                 challengeId: challenge._id,
@@ -15,9 +14,9 @@ async function sendChallengeToUsers(challenge) {
                 doc: '',
                 completedTime: null
             });
-            await newUserChallenge.save();
+            // await newUserChallenge.save();
 
-            user.challenges.push(newUserChallenge._id);
+            user.challenges.push(newUserChallenge);
             await user.save();
         }
 

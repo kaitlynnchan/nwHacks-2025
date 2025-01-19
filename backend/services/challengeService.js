@@ -1,4 +1,4 @@
-const Challenge = require('./models/Challenge');
+const Challenge = require('../models/Challenge');
 
 // Function to create a random challenge
 async function createRandomChallenge() {

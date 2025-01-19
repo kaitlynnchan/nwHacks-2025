@@ -45,7 +45,7 @@ const ChallengeList = () => {
 
   // TODO: update to take in challenge paramaters (title, description, pointsReward (int),isActive (bool),endDate (Date),challengeId (string)
   const handleClick = (challenge) => {
-    alert(`Challenge: ${challenge.title}\Description: ${challenge.description}`);
+    alert(`Challenge: ${challenge.title}\n\nDescription: ${challenge.description}\n\nPoints: ${challenge.pointsReward}\n\nChallenge Status: ${challenge.isActive ? "Active" : "Inactive"}`);
   };
 
   return (

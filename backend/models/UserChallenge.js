@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const userChallengeSchema = new mongoose.Schema({
     challengeId: { type: Number, required: true }, 
-    completed: { type: Boolean, default: 0 },
+    completed: { type: Boolean, default: false },
     answer: { type: String, default: ''},
-    doc: { type: String },
-    completedTime: { type: Date, default: 0 },
+    doc: { type: String, default: null },
+    completedTime: { type: Date, default: null },
 });
 
 module.exports = mongoose.model('UserChallenge', userChallengeSchema);

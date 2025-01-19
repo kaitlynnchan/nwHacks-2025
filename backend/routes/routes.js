@@ -141,7 +141,8 @@ router.get('/challenge/:challengeId', async (req, res) => {
 // Endpoint to get all challenges
 router.get('/challenges', async (req, res) => {
     try {
-        const challenges = await Challenge.find({});
+        const challenges = await Challenge.find({}, { title, description, pointsReward,
+                                                        isActive, endDate, _id });
         res.status(200).json(challenges);
     } catch (err) {
         res.status(500).json({ error: err.message });

@@ -53,7 +53,7 @@ export default function AnswerPanel() {
               Enter your answer
             </button>
             <button className="answerButton" onClick={handleCapture}>
-              Capture a pic!
+              Upload photo!
             </button>
           </div>
           {popupVisible && (

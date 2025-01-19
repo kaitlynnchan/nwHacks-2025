@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ChallengeList.css";
 import ButtonHeader from "./ButtonHeader.jsx";
 import "./ButtonHeader.css";
@@ -30,6 +30,7 @@ const ChallengeList = () => {
     const getChallenges = async () => {
       try {
         const data = await fetchChallenges();
+
         // updates challenges with new data
         setChallenges(data);
       } catch (err) {
@@ -44,7 +45,7 @@ const ChallengeList = () => {
 
   // TODO: update to take in challenge paramaters (title, description, pointsReward (int),isActive (bool),endDate (Date),challengeId (string)
   const handleClick = (challenge) => {
-    alert(`Challenge: ${challenge.name}\nStatus: ${challenge.status}`);
+    alert(`Challenge: ${challenge.title}\Description: ${challenge.description}`);
   };
 
   return (
@@ -53,9 +54,9 @@ const ChallengeList = () => {
       <h1 id = "page-title">Challenge List</h1>
       <ul>
         {challenges.map((challenge) => (
-        <li key={challenge.id} className="challenge-item" onClick={() => handleClick(challenge)}>
-            <span className="challenge-name">{challenge.name}</span>
-            <span className="challenge-status">{challenge.status}</span>
+        <li key={challenge.challengeId} className="challenge-item" onClick={() => handleClick(challenge)}>
+            <span className="challenge-name">{challenge.title}</span>
+            <span className="challenge-status">{challenge.pointsReward} pts</span>
         </li>
         ))}
       </ul>

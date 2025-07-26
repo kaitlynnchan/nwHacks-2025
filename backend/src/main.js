@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const connectDB = require('./database');
-const routes = require('./routes/routes');
+const routes = require('../routes/routes');
 const challengeCronJob = require('./services/challengeCronJob');
 
 const app = express();

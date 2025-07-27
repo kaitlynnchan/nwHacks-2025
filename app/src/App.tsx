@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+
 import LogInPage from './pages/LogIn';
 import Challenges from './pages/ChallengesList';
-import './App.css'
 import ChallengeDetail from './pages/ChallengeDetail';
 import CongratulationsPage from './pages/Congrats';
+import './App.css'
 
 function App() {
   return (

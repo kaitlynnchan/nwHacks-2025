@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-// import "./ChallengeList.css";
-// import ButtonHeader from "./ButtonHeader.jsx";
-// import "./ButtonHeader.css";
-import { fetchChallenges } from "../services/api/challengeRoutes";
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Flag } from "lucide-react";
+import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
+
+import { fetchChallenges } from "../services/api/challengeRoutes";
 
 interface Challenge {
   id: string
@@ -16,18 +14,15 @@ interface Challenge {
 }
 
 const ChallengesList = () => {
-  const navigate = useNavigate();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [error, setError] = useState<string | unknown>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Fetch challenges using the API utility
   useEffect(() => {
     const getChallenges = async () => {
       try {
         const data = await fetchChallenges();
-
-        // updates challenges with new data
         setChallenges(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -41,20 +36,26 @@ const ChallengesList = () => {
     getChallenges();
   }, []);
 
-  // TODO: update to take in challenge paramaters (title, description, pointsReward (int),isActive (bool),endDate (Date),challengeId (string)
   const handleClick = (challenge: Challenge) => {
     navigate(`/challenges/${challenge.id}`);
   };
 
+  if (loading) return <div>Loading challenges...</div>;
+  if (error) return <div>Error: error</div>;
+  if (!challenges) return <div>Hold on there, currently there are no challenges!</div>;
+
   return (
     <div className="space-y-4">
       {challenges.map((challenge: Challenge) => (
-        <Card onClick={() => handleClick(challenge)} 
-            className="bg-white/80 backdrop-blur-sm border-white/20 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]">
-          <CardHeader  className="p-2">
+        <Card 
+          key={`challenge-${challenge.id}`}
+          onClick={() => handleClick(challenge)} 
+          className="py-2 bg-white/80 border-white/20 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <CardHeader className="p-2">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3 flex-1">
-                <div className="bg-gradient-to-br from-orange-400 to-yellow-400 p-2 rounded-xl shadow-md flex-shrink-0">
+                <div className="gradient-box p-2 rounded-xl shadow-md flex-shrink-0">
                   <Flag size={20} className="text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -62,9 +63,9 @@ const ChallengesList = () => {
                   <CardDescription>{challenge.description}</CardDescription>
                 </div>
               </div>
-          {/* <CardAction>+{challenge.points} pts</CardAction> */}
+
               <div className="flex items-center gap-2 flex-shrink-0 ml-3">
-                <Badge className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white px-3 py-1 text-sm font-bold shadow-md">
+                <Badge className="gradient-box px-3 py-1 text-sm font-bold shadow-md">
                   +{challenge.points}
                 </Badge>
                 <ChevronRight size={16} className="text-gray-400" />

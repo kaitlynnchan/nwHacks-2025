@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Flag } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
+import { Card, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
 
-import { fetchChallenges } from "../services/api/challengeRoutes";
+import { fetchChallenges } from "../../../services/api/challengeRoutes";
 
 interface Challenge {
   id: string

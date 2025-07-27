@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
-import LogInPage from './pages/LogIn';
-import Challenges from './pages/ChallengesList';
-import ChallengeDetail from './pages/ChallengeDetail';
-import CongratulationsPage from './pages/Congrats';
+import LogInPage from './pages/LogIn/LogIn';
+import Challenges from './pages/Challenge/ChallengesList/Challenges';
+import ChallengeDetail from './pages/Challenge/ChallengeDetails/ChallengeDetail';
+import ChallengeCompletion from './pages/Challenge/ChallengeCompletion/ChallengeCompletion';
 import './App.css'
 
 function App() {
@@ -33,7 +33,7 @@ function CongratulationsWrapper() {
   };
 
   return (
-    <CongratulationsPage
+    <ChallengeCompletion
       challengeTitle={state?.challengeTitle || "Challenge"}
       pointsEarned={state?.pointsEarned || 10}
       previousPoints={state?.previousPoints || 0}

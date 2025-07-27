@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center; */
+  background-image: linear-gradient(to bottom right, #fff7ed, #fefce8, #fdf2f8);
 }
 
 .logo {
@@ -39,4 +40,24 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradient-text {
+  font-weight: bold;
+  background-image: linear-gradient(to right, #ea580c, #ca8a04);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-box {
+  background-image: linear-gradient(to bottom right, #fb923c, #facc15);
+  color: white;
 }

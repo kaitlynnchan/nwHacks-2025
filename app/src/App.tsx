@@ -1,35 +1,49 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import LogInPage from './pages/LogIn';
+import Challenges from './pages/ChallengesList';
 import './App.css'
+import ChallengeDetail from './pages/ChallengeDetail';
+import CongratulationsPage from './pages/Congrats';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <BrowserRouter>
+        <div className="App">
+            <Routes>
+              <Route index element={<LogInPage />} />
+              <Route path="/home" element={<LogInPage />} />
+              <Route path="/challenges" element={<Challenges />} />
+              <Route path="/challenges/:challengeId" element={<ChallengeDetail />} />
+              <Route path="/congratulations" element={<CongratulationsWrapper />} />
+              {/* <Route path="/daily" element={<Challenge />} /> */}
+            </Routes>
+        </div>
+      </BrowserRouter>
   )
 }
 
-export default App
+function CongratulationsWrapper() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as {
+    challengeTitle: string;
+    pointsEarned: number;
+    previousPoints: number;
+  };
+
+  return (
+    <CongratulationsPage
+      challengeTitle={state?.challengeTitle || "Challenge"}
+      pointsEarned={state?.pointsEarned || 10}
+      previousPoints={state?.previousPoints || 0}
+      onContinue={() => navigate('/challenges')}
+      onViewProfile={() => navigate('/profile')}
+    />
+  );
+}
+export default App;

@@ -1,4 +1,4 @@
-import ChallengesList from "@/components/ChallengesList";
+import ChallengesList from "@/pages/Challenge/ChallengesList/ChallengesList";
 import TopNavBar from "@/components/TopNavBar";
 
 const Challenges = () => {

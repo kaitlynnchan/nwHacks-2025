@@ -1,7 +1,4 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import LogInPage from './pages/LogIn';
 import Challenges from './pages/ChallengesList';
 import './App.css'
@@ -9,8 +6,6 @@ import ChallengeDetail from './pages/ChallengeDetail';
 import CongratulationsPage from './pages/Congrats';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
       <BrowserRouter>
         <div className="App">

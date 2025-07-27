@@ -1,23 +1,33 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
+import { LoginForm } from "@/components/LoginForm";
 // import "./LogIn.css";
 
-
 function LogInPage() {
-  const navigate = useNavigate();
-
-  const handleLogInClick = () => {
-    navigate("/challenges");
-  };
 
   return (
-    <div id="logInDiv">
-      <h1 id = "title">Connect Quest</h1>
-      <Input type="email" placeholder="Email"/>
-      <Input type="password" placeholder="Password"/>
-      <Button onClick={handleLogInClick} >Log in</Button>
-      {/* <Button >Sign up</Button> */}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-pink-50 flex items-center justify-center p-6">
+      <LoginForm />
+      {/* <div className="flex flex-col gap-4 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-2 font-medium"> */}
+            {/* <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+              <GalleryVerticalEnd className="size-4" />
+            </div> */}
+            {/* Connect Quest
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
+        </div>
+      </div>
+      <div className="bg-muted relative hidden lg:block">
+        <img
+          src="/placeholder.svg"
+          alt="Image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div> */}
     </div>
   );
 }

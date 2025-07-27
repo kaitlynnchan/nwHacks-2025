@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { fetchChallenges } from "../services/api/challengeRoutes";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Link, useNavigate } from 'react-router-dom';
+import { ChevronRight, Flag } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 interface Challenge {
   id: string
@@ -45,13 +47,29 @@ const ChallengesList = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       {challenges.map((challenge: Challenge) => (
-        <Card onClick={() => handleClick(challenge)}>
-          <CardHeader>
-            <CardTitle>{challenge.title}</CardTitle>
-            <CardDescription>{challenge.description}</CardDescription>
-            <CardAction>+{challenge.points} pts</CardAction>
+        <Card onClick={() => handleClick(challenge)} 
+            className="bg-white/80 backdrop-blur-sm border-white/20 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]">
+          <CardHeader  className="p-2">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3 flex-1">
+                <div className="bg-gradient-to-br from-orange-400 to-yellow-400 p-2 rounded-xl shadow-md flex-shrink-0">
+                  <Flag size={20} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <CardTitle>{challenge.title}</CardTitle>
+                  <CardDescription>{challenge.description}</CardDescription>
+                </div>
+              </div>
+          {/* <CardAction>+{challenge.points} pts</CardAction> */}
+              <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                <Badge className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white px-3 py-1 text-sm font-bold shadow-md">
+                  +{challenge.points}
+                </Badge>
+                <ChevronRight size={16} className="text-gray-400" />
+              </div>
+            </div>
           </CardHeader>
         </Card>
       ))}

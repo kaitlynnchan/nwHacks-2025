@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Trophy, Star, ArrowRight, CheckCircle, ChevronRightIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 // import { Confetti, type ConfettiRef } from '@/components/magicui/confetti';
 
@@ -81,24 +81,51 @@ const AnimatedPoints = ({ previousPoints, newPoints, pointsEarned }: {
   newPoints: number;
   pointsEarned: number;
 }) => {
-  const [showIncrease, setShowIncrease] = useState(false);
-  const { count } = useCountUp(newPoints, previousPoints, 2000);
-
+  const [currentPoints, setCurrentPoints] = useState(previousPoints);
+  
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIncrease(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const increment = pointsEarned / steps;
+    let step = 0;
+    
+    const timer = setInterval(() => {
+      step++;
+      if (step <= steps) {
+        setCurrentPoints(Math.floor(previousPoints + (increment * step)));
+      } else {
+        setCurrentPoints(newPoints);
+        clearInterval(timer);
+      }
+    }, duration / steps);
+    
+    return () => clearInterval(timer);
+  }, [previousPoints, newPoints, pointsEarned]);
 
   return (
-    <Card>
-        <CardHeader>
-            <Badge>+{pointsEarned}</Badge>
-            <CardTitle>{count.toLocaleString()}</CardTitle>
-            <CardDescription>Total Points</CardDescription>
-        </CardHeader>
+    <Card className="bg-gradient-to-br from-orange-100 to-yellow-100 border-orange-200 shadow-lg">
+      <CardContent className="text-center">
+        <div className="space-y-3">
+          <div className="flex items-center justify-center gap-2 text-orange-600">
+            <Star className="h-5 w-5" />
+            <span className="font-semibold">Points Earned!</span>
+          </div>
+          <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+            +{pointsEarned} Points
+          </div>
+          <div className="text-sm text-gray-600">
+            Total: {currentPoints.toLocaleString()} points
+          </div>
+        </div>
+      </CardContent>
     </Card>
+    // <Card>
+    //     <CardHeader>
+    //         <Badge>+{pointsEarned}</Badge>
+    //         <CardTitle>{count.toLocaleString()}</CardTitle>
+    //         <CardDescription>Total Points</CardDescription>
+    //     </CardHeader>
+    // </Card>
     // <div className="text-center space-y-4">
     //   <div className="relative">
     //     <div className="text-6xl font-bold text-primary mb-2">
@@ -167,7 +194,7 @@ export default function CongratulationsPage({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-pink-50 flex items-center justify-center p-6">
       {/* <Confetti /> */}
       {/* <Confetti
         ref={confettiRef}
@@ -190,7 +217,7 @@ export default function CongratulationsPage({
 
         {/* Congratulations Text */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-yellow-600 to-pink-600 bg-clip-text text-transparent">
             Congratulations! 🎉
           </h1>
           <p className="text-lg text-gray-600">
@@ -222,7 +249,10 @@ export default function CongratulationsPage({
         </div> */}
 
         {/* Action Buttons */}
-        <Button onClick={handleContinue}>Continue Challenges <ChevronRightIcon /></Button>
+        <Button onClick={handleContinue}
+        className='w-full bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] text-lg'>
+            Continue Challenges <ChevronRightIcon />
+        </Button>
         {/* <div className="space-y-3">
           <button
             onClick={handleContinue}

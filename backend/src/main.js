@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const connectDB = require('./database');
-const userRoutes = require('./routes/users.routes');
-// const challengeRoutes = require('./routes/challenges.routes');
+const { router: userRoutes } = require('./routes/users.routes');
+const { router: challengeRoutes } = require('./routes/challenges.routes');
 // const challengeCronJob = require('./services/challengeCronJob');
 const { PORT } = require('../config/config')
 
@@ -19,7 +19,7 @@ connectDB();
 // challengeCronJob();
 
 app.use('/api/', userRoutes);
-// app.use('/api/', challengeRoutes);
+app.use('/api/', challengeRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

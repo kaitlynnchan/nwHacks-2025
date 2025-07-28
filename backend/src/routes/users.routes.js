@@ -60,4 +60,6 @@ router.get('/users/:userId', getUser);
 //     }
 // });
 
-module.exports = router;
+module.exports = {
+    router
+};

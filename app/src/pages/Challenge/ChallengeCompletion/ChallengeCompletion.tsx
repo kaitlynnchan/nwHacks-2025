@@ -2,28 +2,34 @@ import { useState } from 'react';
 import { CheckCircle, ChevronRightIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AnimatedPoints from './AnimatedPoints';
+import { useNavigate } from 'react-router-dom';
 // import { Confetti, type ConfettiRef } from '@/components/magicui/confetti';
 
 interface CongratulationsProps {
+  userId: string
   challengeTitle: string;
   pointsEarned: number;
   previousPoints: number;
-  onContinue: () => void;
-  onViewProfile: () => void;
 }
 
-function ChallengeCompletion({ 
+function ChallengeCompletion({
+  userId,
   challengeTitle = "Challenge",
   pointsEarned = 10,
-  previousPoints = 0,
-  onContinue
+  previousPoints = 0
 }: CongratulationsProps) {
   const [showContent, setShowContent] = useState(false);
   const newPoints = previousPoints + pointsEarned;
+  const navigator = useNavigate();
 //   const confettiRef = useRef<ConfettiRef>(null);
 
   const handleContinue = () => {
-    onContinue();
+    navigator('/challenges', {
+      state: {
+        userId: userId,
+        userPoints: newPoints
+      }
+    })
   };
 
   return (

@@ -8,8 +8,17 @@ const createUserDb = async (email) => {
     return newUser;
 }
 
-const getUserDb = async (userId) => {
-    return await User.findOne({ _id: userId });
+const getUserDb = async ({
+    email,
+    userId
+}) => {
+    if (userId) {
+        return await User.findById(userId);
+    } else if (email) {
+        return await User.findOne({ email: email });
+    }
+    return null;
+    
 }
 
 const createUserChallenge = async ({user, userChallenge, points}) => {

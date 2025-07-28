@@ -9,7 +9,7 @@ import './App.css'
 function App() {
   return (
       <BrowserRouter>
-        <div className="App">
+        <div className="App min-h-screen">
             <Routes>
               <Route index element={<LogInPage />} />
               <Route path="/home" element={<LogInPage />} />

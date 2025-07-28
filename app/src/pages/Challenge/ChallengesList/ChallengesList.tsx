@@ -6,6 +6,11 @@ import { Badge } from "../../../components/ui/badge";
 
 import { fetchChallenges } from "../../../services/api/challengeRoutes";
 
+interface ChallengeProps {
+  userId: string;
+  userPoints: number;
+}
+
 interface Challenge {
   id: string
   title: string
@@ -13,7 +18,7 @@ interface Challenge {
   points: number
 }
 
-const ChallengesList = () => {
+const ChallengesList = ({userId, userPoints}: ChallengeProps) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [error, setError] = useState<string | unknown>(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +42,12 @@ const ChallengesList = () => {
   }, []);
 
   const handleClick = (challenge: Challenge) => {
-    navigate(`/challenges/${challenge.id}`);
+    navigate(`/challenges/${challenge.id}`, {
+      state: { 
+        userId: userId, 
+        userPoints: userPoints 
+      }
+    });
   };
 
   if (loading) return <div>Loading challenges...</div>;

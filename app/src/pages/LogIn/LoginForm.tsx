@@ -1,22 +1,64 @@
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Users } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
+import { fetchUser } from "@/services/api/userRoute";
+
+interface UserChallenge {
+  id: string;
+  challengeId: string;
+  completed: boolean;
+  notes: string;
+  document: string;
+  completedAtTs: Date;
+}
+
+interface User {
+  id: string;
+  email: string;
+  points: number;
+  challenges: [UserChallenge]
+}
 
 function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogInClick = () => {
-    navigate("/challenges");
+  const handleLogInSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const user: User = await fetchUser(email);
+      console.log(user)
+      navigate("/challenges", {
+        state: { 
+          userId: user.id, 
+          userPoints: user.points 
+        }
+      });
+    } catch (err) {
+      alert('Email or password is incorrect');
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form 
+      className={cn("flex flex-col gap-6", className)} {...props} 
+      onSubmit={handleLogInSubmit}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <div className="flex justify-center mb-4">
           <div className="gradient-box p-4 rounded-2xl shadow-lg">
@@ -38,14 +80,26 @@ function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input className="bg-white" id="email" type="email" placeholder="m@email.com" required />
+          <Input 
+            className="bg-white" 
+            id="email" 
+            type="email" 
+            placeholder="m@email.com" 
+            required 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
         </div>
         <div className="grid gap-3">
           <Label htmlFor="password">Password</Label>
-          <Input className="bg-white" id="password" type="password" required />
+          <Input 
+            className="bg-white" 
+            id="password" 
+            type="password" 
+            required 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
         </div>
-        <Button onClick={() => handleLogInClick()} className="w-full gradient-box hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12">
-        {/* <Button type="submit" className="w-full"> */}
+        <Button type="submit" className="w-full gradient-box hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12">
           Let's Get Started
         </Button>        
       </div>

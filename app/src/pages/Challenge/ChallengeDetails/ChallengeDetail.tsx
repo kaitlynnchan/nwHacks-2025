@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { fetchChallenge } from '@/services/api/challengeRoutes';
 import { CheckCircle, Flag } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 import TopNavBar from '@/components/TopNavBar';
+import { linkChallengeToUser } from '@/services/api/userRoute';
+
+interface LocationState {
+  userId: string;
+  userPoints: number;
+}
 
 interface Challenge {
   id: string;
@@ -31,9 +37,10 @@ function ChallengeDetail({
   // onSubmit = (id, points, notes) => console.log('Submit:', { id, points, notes })
 }: ChallengeDetailsProps) {
   const { challengeId } = useParams<{ challengeId: string }>();
+  const location = useLocation();
+  const { userId, userPoints } = location.state as LocationState;
   
   const [challenge, setChallenge] = useState<Challenge>();
-  const [userPoints, setUserPoints] = useState(85); // Current user points
   const [notes, setNotes] = useState('');
   
   const [loading, setLoading] = useState(true);
@@ -67,10 +74,9 @@ function ChallengeDetail({
 
     setIsSubmitting(true);
     try {
-      // Submit challenge completion to your API
-
-      // Navigate to congratulations page with data
       if (challenge){
+        await linkChallengeToUser(userId, challengeId, notes, '');
+
         navigate('/congratulations', {
           state: {
             challengeTitle: challenge.title,
@@ -79,9 +85,8 @@ function ChallengeDetail({
           }
         });
       }
-      
-      // Update user points locally
-      setUserPoints(prev => prev + pointsEarned);
+    } catch (err) {
+      alert(err)      
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +96,7 @@ function ChallengeDetail({
   
   return (
     <div>
-      <TopNavBar />
+      <TopNavBar userPoints={userPoints} />
       <div className="p-4 space-y-4">
         
         {/* Main Content */}

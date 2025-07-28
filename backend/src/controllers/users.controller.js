@@ -30,14 +30,14 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const user = await getUserDb(userId);
+        const { email } = req.params;
+        const user = await getUserDb({email:email});
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
         return res.status(200).json({
             id: user._id,
             email: user.email,
-            points: userser.points,
+            points: user.points,
             challenges: user.challenges.map(uc => ({
                 id: uc._id,
                 challengeId: uc.challengeId,
@@ -57,7 +57,7 @@ const linkChallengeToUser = async (req, res) => {
         const { userId, challengeId } = req.params;
         const { completed, notes, document, completedAtTs } = req.body;
 
-        const user = await getUserDb(userId);
+        const user = await getUserDb({userId: userId});
         const challenge = await getChallengeDb(challengeId);
         if (!user || !challenge) {
             return res.status(404).json({ error: "User or Challenge not found" });
@@ -118,7 +118,7 @@ const getUserChallenge = async (req, res) => {
 const getUserChallenges = async (req, res) => {
     try {
         const { userId } = req.params;
-        const user = await getUserDb(userId);
+        const user = await getUserDb({userId: userId});
         return res.status(200).json(user.challenges.map(uc => ({
             id: uc._id,
             challengeId: uc.challengeId,

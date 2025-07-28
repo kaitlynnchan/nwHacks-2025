@@ -4,8 +4,11 @@ import { LogOut, Star, Users } from "lucide-react";
 
 import { Button } from "./ui/button";
 
-function TopNavBar() {
-  const [userPoints, setUserPoints] = useState(0);
+interface TopNavbarProps {
+  userPoints: number;
+}
+
+function TopNavBar({ userPoints }: TopNavbarProps) {
   const navigate = useNavigate();
 
   const handleLogOut = () => {

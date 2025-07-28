@@ -5,13 +5,14 @@
 	"main": "main.js",
 	"scripts": {
 		"start": "exec node main.js",
-		"start dev": "node src/main.js"
+		"dev": "node src/main.js"
 	},
 	"dependencies": {
 		"@types/react": "^19.1.8",
 		"@types/react-dom": "^19.1.6",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
+		"dotenv": "^17.2.1",
 		"express": "^4.17.1",
 		"mongoose": "^8.9.5",
 		"node-cron": "^3.0.3"

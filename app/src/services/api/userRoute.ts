@@ -42,6 +42,15 @@ export const linkChallengeToUser = async (
     });
 };
 
+export const fetchUserChallenges = async (userId: string) => {
+  return await axios.get(`${API_URL}/users/${userId}/challenges`)
+    .then((res) => {
+      return res.data
+    }).catch((err) => {
+      throw new Error(err!.response!.data?.error || "Failed to fetch user challenges");
+    });
+}
+
 export const fetchUserChallenge = async (userId: string, challengeId: string) => {
   return await axios.get(`${API_URL}/users/${userId}/challenge/${challengeId}`)
     .then((res) => {

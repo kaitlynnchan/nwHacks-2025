@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import LogInPage from './pages/LogIn/LogIn';
 import Challenges from './pages/Challenge/ChallengesList/Challenges';

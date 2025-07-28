@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchChallenge } from '@/services/api/challengeRoutes';
-import { CheckCircle, Flag } from 'lucide-react';
+import { CheckCircle, Flag, Star } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 import TopNavBar from '@/components/TopNavBar';
-import { linkChallengeToUser } from '@/services/api/userRoute';
+import { fetchUserChallenge, linkChallengeToUser } from '@/services/api/userRoute';
 import { useUser } from '@/contexts/UserContext';
 
 interface Challenge {
@@ -23,28 +23,55 @@ interface Challenge {
   requirements: string[];
 }
 
+interface UserChallenge {
+  id: string;
+  challengeId: string;
+  completed: boolean;
+  notes: string;
+  completedAt: string;
+}
+
 function ChallengeDetail() {
   const { challengeId } = useParams<{ challengeId: string }>();
   const { userId, userPoints, setUserPoints } = useUser();
   
   const [challenge, setChallenge] = useState<Challenge>();
+  const [userChallenge, setUserChallenge] = useState<UserChallenge | null>(null);
   const [notes, setNotes] = useState('');
+  const [isCompleted, setCompleted] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const getChallenge = async () => {
       try {
         setLoading(true);
-        const response = await fetchChallenge(challengeId!);
-        setChallenge(response);
+
+        const challenge: Challenge = await fetchChallenge(challengeId!);
+        setChallenge(challenge);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load challenge');
       } finally {
+        getUserChallenge();
         setLoading(false);
+      }
+    };
+
+    const getUserChallenge = async () => {
+      try {
+        const userChallenge: UserChallenge = await fetchUserChallenge(userId!, challengeId!);
+        setUserChallenge(userChallenge);
+
+        if (userChallenge) {
+          setNotes(userChallenge.notes);
+          setCompleted(true);
+        }
+      } catch (err) {
+        setCompleted(false);
       }
     };
 
@@ -81,24 +108,89 @@ function ChallengeDetail() {
     }
   };
 
-  if (!challenge) return <div>Challenge not found</div>;
-  
+  if (loading) {
+    return (
+      <div>
+        <TopNavBar />
+        <div className="min-h-screen flex-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-400 border-t-transparent"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <TopNavBar />
+        <div className="min-h-screen flex-center">
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-red-600 mb-2">Error</h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!challenge) {
+    return (
+      <div>
+        <TopNavBar />
+        <div className="min-h-screen flex-center">
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-gray-800 mb-2">Challenge not found</h2>
+            <p className="text-gray-600">The requested challenge could not be found.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <TopNavBar />
       <div className="p-4 space-y-4">
+        {/* Completion Status Banner */}
+        {isCompleted && (
+          <Card className="bg-gradient-to-r from-green-100/90 to-emerald-100/90 backdrop-blur-sm border-green-200/50 shadow-lg">
+            <CardContent>
+              <CardTitle className='font-bold text-green-800 flex items-center'>Challenge Completed!</CardTitle>
+              {/* <CardAction>Completed on {new Date(userChallenge.completedAt).toLocaleDateString()}</CardAction> */}
+            </CardContent>
+          </Card>
+        )}
         
         {/* Main Content */}
         <div>
-          <Card className="shadow-lg border-0 backdrop-blur-sm gap-1 py-4">
+          <Card className={`shadow-lg border-0 backdrop-blur-sm gap-1 py-4 transition-all duration-200 cursor-pointer
+            ${isCompleted 
+                ? 'bg-gradient-to-r from-green-50/90 to-emerald-50/90 hover:from-green-100/90 hover:to-emerald-100/90 border-green-200/50' 
+                : 'bg-white/80 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+              }
+          `}>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div className="gradient-box p-2 rounded-2xl shadow-lg">
-                  <Flag size={24} className="text-white" />
+                <div className={`p-2 rounded-2xl shadow-lg flex-shrink-0 
+                  ${isCompleted 
+                    ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
+                    : 'gradient-box'
+                  }
+                `}>
+                  {isCompleted ? (
+                    <CheckCircle size={20} className="text-white" />
+                  ) : (
+                    <Flag size={20} className="text-white" />
+                  )}
                 </div>
                 <div className="text-right">
-                  <Badge className="gradient-box px-4 py-2 font-bold shadow-md">
-                    +{challenge.points} pts
+                  <Badge className={`px-4 py-2 font-bold shadow-md 
+                    ${isCompleted 
+                      ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
+                      : 'gradient-box'
+                    }
+                  `} >
+                    {isCompleted ? '✓' : '+'}{challenge.points} pts
                   </Badge>
                 </div>
               </div>
@@ -160,41 +252,58 @@ function ChallengeDetail() {
           <Card className="shadow-lg bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm sticky top-24">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                Submit Challenge
+                {isCompleted ? 'Your Submission:' : 'Submit Challenge'}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="notes" className="text-sm font-medium">
-                  What did you accomplish? *
+                  {isCompleted ? 'What you accomplished:' : 'What did you accomplish? *'}
                 </Label>
                 <Textarea
                   id="notes"
-                  placeholder="Describe what you did to complete this challenge. Be specific about your experience!"
+                  placeholder={isCompleted 
+                    ? "Your submission has been recorded" 
+                    : "Describe what you did to complete this challenge. Be specific about your experience!"
+                  }
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={4}
                   className="resize-none"
+                  disabled={isCompleted}
                 />
               </div>
 
-              <Button 
-                onClick={() => handleSubmit(challenge.id, challenge.points)}
-                disabled={isSubmitting || !notes.trim()}
-                className="w-full py-6 text-lg font-semibold gradient-box shadow-lg hover:shadow-xl transition-all duration-200"
-                size="lg"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    Submit Challenge
-                  </>
-                )}
-              </Button>
+              {isCompleted ? (
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-4 border border-green-200">
+                  <div className="flex items-center gap-2 text-green-800 mb-2">
+                    <Star size={16} />
+                    <span className="font-semibold">Challenge Complete!</span>
+                  </div>
+                  <p className="text-sm text-green-700">
+                    You've successfully completed this challenge and earned {challenge.points} points! 
+                    Keep exploring more challenges to continue your social quest.
+                  </p>
+                </div>
+              ) : (
+                <Button 
+                  onClick={() => handleSubmit(challenge.id, challenge.points)}
+                  disabled={isSubmitting || !notes.trim()}
+                  className="w-full py-6 text-lg font-semibold gradient-box shadow-lg hover:shadow-xl transition-all duration-200"
+                  size="lg"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Submit Challenge
+                    </>
+                  )}
+                </Button>
+              )}
             </CardContent>
           </Card>
         </div>

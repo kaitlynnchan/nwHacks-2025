@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Star, Users } from "lucide-react";
+import { ArrowLeft, LogOut, Star, Users } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { useUser } from "@/contexts/UserContext";
@@ -19,11 +19,23 @@ function TopNavBar() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           
+          
           {/* Logo and App Name */}
           <div className="flex items-center gap-3">
-            <div className="gradient-box p-2 rounded-xl shadow-lg">
-              <Users size={24} className="text-white" />
+            <div className="flex items-right gap-1">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => navigate(-1)}
+                className="hover:bg-orange-100/80 text-gray-600 hover:text-orange-600 transition-colors"
+              >
+                <ArrowLeft size={20} />
+              </Button>
+              <div className="gradient-box p-2 rounded-xl shadow-lg">
+                <Users size={24} className="text-white" />
+              </div>
             </div>
+            
             <h1 className="text-xl gradient-text">
             {/* <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent"> */}
               Connect Quest

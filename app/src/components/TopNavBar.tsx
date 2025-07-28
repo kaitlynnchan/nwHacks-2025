@@ -3,17 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { LogOut, Star, Users } from "lucide-react";
 
 import { Button } from "./ui/button";
+import { useUser } from "@/contexts/UserContext";
 
-interface TopNavbarProps {
-  userPoints: number;
-}
-
-function TopNavBar({ userPoints }: TopNavbarProps) {
+function TopNavBar() {
+  const { userPoints } = useUser();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
     console.log("click logout")
-    navigate('/');
+    navigate('/login');
   };
 
   return (

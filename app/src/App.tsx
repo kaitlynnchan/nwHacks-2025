@@ -12,7 +12,7 @@ function App() {
         <div className="App min-h-screen">
             <Routes>
               <Route index element={<LogInPage />} />
-              <Route path="/home" element={<LogInPage />} />
+              <Route path="/login" element={<LogInPage />} />
               <Route path="/challenges" element={<Challenges />} />
               <Route path="/challenges/:challengeId" element={<ChallengeDetail />} />
               <Route path="/congratulations" element={<CongratulationsWrapper />} />
@@ -24,7 +24,6 @@ function App() {
 }
 
 function CongratulationsWrapper() {
-  const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as {
     challengeTitle: string;
@@ -37,8 +36,6 @@ function CongratulationsWrapper() {
       challengeTitle={state?.challengeTitle || "Challenge"}
       pointsEarned={state?.pointsEarned || 10}
       previousPoints={state?.previousPoints || 0}
-      onContinue={() => navigate('/challenges')}
-      onViewProfile={() => navigate('/profile')}
     />
   );
 }

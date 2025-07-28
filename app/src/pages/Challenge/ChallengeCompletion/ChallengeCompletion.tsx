@@ -6,14 +6,12 @@ import { useNavigate } from 'react-router-dom';
 // import { Confetti, type ConfettiRef } from '@/components/magicui/confetti';
 
 interface CongratulationsProps {
-  userId: string
   challengeTitle: string;
   pointsEarned: number;
   previousPoints: number;
 }
 
 function ChallengeCompletion({
-  userId,
   challengeTitle = "Challenge",
   pointsEarned = 10,
   previousPoints = 0
@@ -24,12 +22,7 @@ function ChallengeCompletion({
 //   const confettiRef = useRef<ConfettiRef>(null);
 
   const handleContinue = () => {
-    navigator('/challenges', {
-      state: {
-        userId: userId,
-        userPoints: newPoints
-      }
-    })
+    navigator('/challenges')
   };
 
   return (

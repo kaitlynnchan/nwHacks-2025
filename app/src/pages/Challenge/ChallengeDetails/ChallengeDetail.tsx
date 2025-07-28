@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchChallenge } from '@/services/api/challengeRoutes';
 import { CheckCircle, Flag } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,11 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import TopNavBar from '@/components/TopNavBar';
 import { linkChallengeToUser } from '@/services/api/userRoute';
-
-interface LocationState {
-  userId: string;
-  userPoints: number;
-}
+import { useUser } from '@/contexts/UserContext';
 
 interface Challenge {
   id: string;
@@ -27,18 +23,9 @@ interface Challenge {
   requirements: string[];
 }
 
-interface ChallengeDetailsProps {
-  challenge: Challenge;
-  onBack?: () => void;
-  onSubmit?: (challengeId: string, points: number, notes: string) => void;
-}
-
-function ChallengeDetail({
-  // onSubmit = (id, points, notes) => console.log('Submit:', { id, points, notes })
-}: ChallengeDetailsProps) {
+function ChallengeDetail() {
   const { challengeId } = useParams<{ challengeId: string }>();
-  const location = useLocation();
-  const { userId, userPoints } = location.state as LocationState;
+  const { userId, userPoints, setUserPoints } = useUser();
   
   const [challenge, setChallenge] = useState<Challenge>();
   const [notes, setNotes] = useState('');
@@ -75,7 +62,9 @@ function ChallengeDetail({
     setIsSubmitting(true);
     try {
       if (challenge){
-        await linkChallengeToUser(userId, challengeId, notes, '');
+        await linkChallengeToUser(userId!, challengeId, notes, '');
+        // update user points
+        setUserPoints(userPoints! + challenge.points);
 
         navigate('/congratulations', {
           state: {
@@ -96,7 +85,7 @@ function ChallengeDetail({
   
   return (
     <div>
-      <TopNavBar userPoints={userPoints} />
+      <TopNavBar />
       <div className="p-4 space-y-4">
         
         {/* Main Content */}

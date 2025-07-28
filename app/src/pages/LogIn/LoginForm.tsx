@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { fetchUser } from "@/services/api/userRoute";
+import { useUser } from "@/contexts/UserContext";
 
 interface UserChallenge {
   id: string;
@@ -33,6 +34,8 @@ function LoginForm({
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const {setUser} = useUser();
+
   const handleLogInSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -41,12 +44,8 @@ function LoginForm({
     try {
       const user: User = await fetchUser(email);
       console.log(user)
-      navigate("/challenges", {
-        state: { 
-          userId: user.id, 
-          userPoints: user.points 
-        }
-      });
+      setUser(user.id, user.points);
+      navigate("/challenges");
     } catch (err) {
       alert('Email or password is incorrect');
     } finally {

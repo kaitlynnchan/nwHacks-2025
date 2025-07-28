@@ -17,7 +17,18 @@ const createChallenge = async (req, res) => {
             estimatedTime: estimatedTime,
             requirements: requirements
         })
-        return res.status(201).json(newChallenge)
+        return res.status(201).json({
+            id: newChallenge._id,
+            title: newChallenge.title,
+            description: newChallenge.description,
+            points: newChallenge.points,
+            difficulty: newChallenge.difficulty,
+            category: newChallenge.category,
+            estimatedTime: newChallenge.estimatedTime,
+            requirements: newChallenge.requirements,
+            isActive: newChallenge.isActive,
+            createdAt: newChallenge.createdAt,
+        })
     } catch (err) {
         return res.status(400).json({error: err.message})
     }
@@ -80,7 +91,18 @@ const getAllChallenges = async (req, res) => {
             return res.status(404).json({ error: 'No challenges found' });
         }
 
-        return res.status(200).json(challenges);
+        return res.status(200).json(challenges.map(challenge => ({
+            id: challenge._id,
+            title: challenge.title,
+            description: challenge.description,
+            points: challenge.points,
+            difficulty: challenge.difficulty,
+            category: challenge.category,
+            estimatedTime: challenge.estimatedTime,
+            requirements: challenge.requirements,
+            isActive: challenge.isActive,
+            createdAt: challenge.createdAt,
+        })));
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }

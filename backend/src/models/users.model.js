@@ -7,15 +7,15 @@ const userChallengeSchema = new mongoose.Schema({
     document: { type: String, default: null },
     completedAtTs: { type: Date, default: null },
 });
+const UserChallenge = mongoose.model('UserChallenge', userChallengeSchema);
 
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
     points: { type: Number, default: 0 },
     challenges: [ userChallengeSchema ]
 });
-
 const User = mongoose.model('User', userSchema);
 
 module.exports = {
-    User, userChallengeSchema
+    User, UserChallenge
 };

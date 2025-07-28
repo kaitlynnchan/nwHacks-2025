@@ -1,4 +1,4 @@
-const { User, userChallengeSchema } = require('../models/users.model');
+const { User, UserChallenge } = require('../models/users.model');
 
 const createUserDb = async (email) => {
     const newUser = new User({
@@ -12,19 +12,31 @@ const getUserDb = async (userId) => {
     return await User.findOne({ _id: userId });
 }
 
-// const createUserChallengeDb = async (user, userChallenge) => {
-//     const newUserChallenge = userChallengeSchema({
-//         challengeId: userChallenge.challengeId,
-//         completed: userChallenge.completed,
-//         notes: userChallenge.notes,
-//         document: userChallenge.document,
-//         completedAtTs: userChallenge.completedAtTs
-//     });
-//     user.challenges.push(newUserChallenge);
+const createUserChallenge = async ({user, userChallenge, points}) => {
+    const newUserChallenge = new UserChallenge({
+        challengeId: userChallenge.challengeId,
+        completed: userChallenge.completed,
+        notes: userChallenge.notes,
+        document: userChallenge.document,
+        completedAtTs: userChallenge.completedAtTs
+    });
+    user.challenges.push(newUserChallenge);
+    user.points = user.points + points;
+    await user.save();
+    return {
+        userChallenge: newUserChallenge, 
+        userPoints: user.points 
+    };
+};
 
-//     await user.save();
-// }
+const getUserChallengeDb = async (userId, challengeId) => {
+    const result = await User.findOne(
+        { _id: userId, 'challenges.challengeId': challengeId },
+        { 'challenges.$': 1 } // only matching 1 element
+    );
+    return result.challenges[0];
+}
 
 module.exports = {
-    createUserDb, getUserDb
+    createUserDb, getUserDb, createUserChallenge, getUserChallengeDb
 };

@@ -7,6 +7,8 @@ import { Badge } from "../../../components/ui/badge";
 import { fetchChallenges } from "../../../services/api/challengeRoutes";
 import { fetchUserChallenges } from "@/services/api/userRoute";
 import { useUser } from "@/contexts/UserContext";
+import Loading from "@/components/Loading";
+import ErrorMessage from "@/components/Error";
 
 interface Challenge {
   id: string;
@@ -65,41 +67,14 @@ const ChallengesList = () => {
     navigate(`/challenges/${challenge.id}`);
   };
 
-  
-  if (loading) {
-    return (
-      <div>
-        <div className="min-h-screen flex-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-400 border-t-transparent"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <div className="min-h-screen flex-center">
-          <div className="text-center">
-            <h2 className="text-xl font-bold text-red-600 mb-2">Error</h2>
-            <p className="text-gray-600">{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!challenges) {
-    return (
-      <div>
-        <div className="min-h-screen flex-center">
-          <div className="text-center">
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Hold on there, currently there are no challenges!</h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage title={"Error"} description={error} />;
+  if (!challenges) return (
+    <ErrorMessage 
+      title={"Hold on there, currently there are no challenges!"} 
+      description={null} 
+    />
+  );
 
   return (
     <div className="space-y-4">

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import LogInPage from './pages/LogIn/LogIn';
 import Challenges from './pages/Challenge/ChallengesList/Challenges';
-import ChallengeDetail from './pages/Challenge/ChallengeDetails/ChallengeDetail';
+import ChallengeDetailPage from './pages/Challenge/ChallengeDetails/ChallengeDetail';
 import ChallengeCompletion from './pages/Challenge/ChallengeCompletion/ChallengeCompletion';
 import './App.css'
 
@@ -14,7 +14,7 @@ function App() {
               <Route index element={<LogInPage />} />
               <Route path="/login" element={<LogInPage />} />
               <Route path="/challenges" element={<Challenges />} />
-              <Route path="/challenges/:challengeId" element={<ChallengeDetail />} />
+              <Route path="/challenges/:challengeId" element={<ChallengeDetailPage />} />
               <Route path="/congratulations" element={<CongratulationsWrapper />} />
               {/* <Route path="/daily" element={<Challenge />} /> */}
             </Routes>

@@ -1,4 +1,5 @@
 # Connect Quest
+Connect Quest is a gamified social app that encourages students to make new connections and explore their community.
 
 # Tech Stack
 Frontend
@@ -29,8 +30,9 @@ $ npm run dev
 ```
 
 
-# Next Steps
+# Future Implementations
 - user authentication
 - AI generated challenges
 - email notifications of new challenges
-- social platform
+- friends leaderboard
+- location based challenge prompts

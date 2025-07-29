@@ -37,14 +37,12 @@ const ChallengesList = () => {
         const allChallenges: Challenge[] = await fetchChallenges();
         const userChallenges: UserChallenge[] = await fetchUserChallenges(userId!);
         
-        // Create a Set of completed challenge IDs
         const completedSet = new Set(
           userChallenges
             .filter((uc: UserChallenge) => uc.completed)
             .map((uc: UserChallenge) => uc.challengeId)
         );
 
-        // Mark challenges as completed if in userChallenges
         const updatedChallenges = allChallenges.map((ch: Challenge) => ({
           ...ch,
           completed: completedSet.has(ch.id),
@@ -84,7 +82,7 @@ const ChallengesList = () => {
           onClick={() => handleClick(challenge)} 
           className={`py-2 bg-white/80 border-white/20 shadow-lg transition-all duration-200 cursor-pointer
             ${challenge.completed 
-                ? 'bg-gradient-to-r from-green-50/90 to-emerald-50/90 hover:from-green-100/90 hover:to-emerald-100/90 border-green-200/50' 
+                ? 'gradient-green-50 hover:from-green-100/90 hover:to-emerald-100/90 border-green-200/50 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]' 
                 : 'bg-white/80 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
               }
           `}
@@ -94,14 +92,14 @@ const ChallengesList = () => {
               <div className="flex items-start gap-3 flex-1">
                 <div className={`p-2 rounded-xl shadow-md flex-shrink-0 
                   ${challenge.completed 
-                    ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
-                    : 'gradient-box'
+                    ? 'gradient-green-400' 
+                    : 'gradient-orange'
                   }
                 `}>
                   {challenge.completed ? (
-                    <CheckCircle size={20} className="text-white" />
+                    <CheckCircle size={20} />
                   ) : (
-                    <Flag size={20} className="text-white" />
+                    <Flag size={20} />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -113,8 +111,8 @@ const ChallengesList = () => {
               <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                 <Badge className={`px-3 py-1 text-sm font-bold shadow-md 
                   ${challenge.completed 
-                    ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
-                    : 'gradient-box'
+                    ? 'gradient-green-400' 
+                    : 'gradient-orange'
                   }
                 `}>
                   {challenge.completed ? '✓' : '+'}{challenge.points}

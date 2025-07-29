@@ -13,6 +13,8 @@ import { fetchUserChallenge, linkChallengeToUser } from '@/services/api/userRout
 import { useUser } from '@/contexts/UserContext';
 import Loading from '@/components/Loading';
 import ErrorMessage from '@/components/Error';
+import { motion } from 'motion/react';
+import { useNavBar } from '@/contexts/NavBarContext';
 
 interface Challenge {
   id: string;
@@ -104,13 +106,12 @@ function ChallengeDetail() {
         });
       }
     } catch (err) {
-      alert(err)      
+      alert(err)
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  
   if (loading) return <Loading />;
   if (error) return <ErrorMessage title={"Error"} description={error} />;
   if (!challenge) return (
@@ -121,12 +122,17 @@ function ChallengeDetail() {
   );
 
   return (
-    <div className="p-4 space-y-4">
+    <motion.div className="p-4 space-y-4"
+      initial={{ x: window.innerWidth }}
+      animate={{ x: 0 }}
+      exit={{ x: -window.innerWidth }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       {/* Completion Status Banner */}
       {isCompleted && (
-        <Card className="bg-gradient-to-r from-green-100/90 to-emerald-100/90 backdrop-blur-sm border-green-200/50 shadow-lg">
+        <Card className="gradient-green-100 backdrop-blur-sm border-green-200/50 shadow-lg">
           <CardContent>
-            <CardTitle className='font-bold text-green-800 flex items-center'>Challenge Completed!</CardTitle>
+            <CardTitle className='font-bold flex items-center'>Challenge Completed!</CardTitle>
             {/* <CardAction>Completed on {new Date(userChallenge.completedAt).toLocaleDateString()}</CardAction> */}
           </CardContent>
         </Card>
@@ -136,7 +142,7 @@ function ChallengeDetail() {
       <div>
         <Card className={`shadow-lg border-0 backdrop-blur-sm gap-1 py-4
           ${isCompleted 
-              ? 'bg-gradient-to-r from-green-50/90 to-emerald-50/90 border-green-200/50' 
+              ? 'gradient-green-50 border-green-200/50' 
               : 'bg-white/80'
             }
         `}>
@@ -144,21 +150,21 @@ function ChallengeDetail() {
             <div className="flex items-center justify-between">
               <div className={`p-2 rounded-2xl shadow-lg flex-shrink-0 
                 ${isCompleted 
-                  ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
-                  : 'gradient-box'
+                  ? 'gradient-green-400' 
+                  : 'gradient-orange'
                 }
               `}>
                 {isCompleted ? (
-                  <CheckCircle size={20} className="text-white" />
+                  <CheckCircle size={20} />
                 ) : (
-                  <Flag size={20} className="text-white" />
+                  <Flag size={20} />
                 )}
               </div>
               <div className="text-right">
                 <Badge className={`px-4 py-2 font-bold shadow-md 
                   ${isCompleted 
-                    ? 'bg-gradient-to-r from-green-400 to-emerald-400 text-white' 
-                    : 'gradient-box'
+                    ? 'gradient-green-400' 
+                    : 'gradient-orange'
                   }
                 `} >
                   {isCompleted ? '✓' : '+'}{challenge.points} pts
@@ -246,8 +252,8 @@ function ChallengeDetail() {
             </div>
 
             {isCompleted ? (
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-4 border border-green-200">
-                <div className="flex items-center gap-2 text-green-800 mb-2">
+              <div className="gradient-green-100 rounded-xl p-4 border border-green-200">
+                <div className="flex items-center gap-2 mb-2">
                   <Star size={16} />
                   <span className="font-semibold">Challenge Complete!</span>
                 </div>
@@ -260,7 +266,7 @@ function ChallengeDetail() {
               <Button 
                 onClick={() => handleSubmit(challenge.id, challenge.points)}
                 disabled={isSubmitting || !notes.trim()}
-                className="w-full py-6 text-lg font-semibold gradient-box shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full py-6 text-lg font-semibold gradient-orange shadow-lg hover:shadow-xl transition-all duration-200"
                 size="lg"
               >
                 {isSubmitting ? (
@@ -278,11 +284,20 @@ function ChallengeDetail() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function ChallengeDetailPage(){
+  const { setConfig } = useNavBar();
+
+  useEffect(() => {
+    setConfig({
+      showBack: true,
+      backPath: '/challenges'
+    });
+  }, [setConfig]);
+
   return (
     <div>
       <TopNavBar />

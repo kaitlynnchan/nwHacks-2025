@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { CheckCircle, ChevronRightIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AnimatedPoints from './AnimatedPoints';
 import { useNavigate } from 'react-router-dom';
-// import { Confetti, type ConfettiRef } from '@/components/magicui/confetti';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import Confetti from 'react-confetti';
 
 interface CongratulationsProps {
   challengeTitle: string;
@@ -13,36 +14,40 @@ interface CongratulationsProps {
 
 function ChallengeCompletion({
   challengeTitle = "Challenge",
-  pointsEarned = 10,
+  pointsEarned = 0,
   previousPoints = 0
 }: CongratulationsProps) {
-  const [showContent, setShowContent] = useState(false);
+  const [isExiting, setExtiting] = useState(false)
   const newPoints = previousPoints + pointsEarned;
   const navigator = useNavigate();
-//   const confettiRef = useRef<ConfettiRef>(null);
 
   const handleContinue = () => {
-    navigator('/challenges')
+    setExtiting(true);
+    setTimeout(() => {
+        navigator("/challenges");
+      }, 300);
   };
 
   return (
-    <div className="min-h-screen flex-center p-6">
-      {/* <Confetti /> */}
-      {/* <Confetti
-        ref={confettiRef}
-        className="absolute left-0 top-0 z-0 size-full"
-        onMouseEnter={() => {
-          confettiRef.current?.fire({});
-        }}
-      /> */}
+    <motion.div 
+      className="min-h-screen flex-center p-6"
+      initial={{ x: 0 }}
+      animate={{ x: isExiting ? -window.innerWidth : 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
+      <Confetti 
+        width={window.innerWidth} 
+        height={window.innerHeight}
+        recycle={false}
+      />
       
       <div className={`max-w-md w-full space-y-8 text-center`}>
         
         {/* Success Icon */}
         <div className="flex justify-center">
           <div className="relative">
-            <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-12 w-12 text-white" />
+            <div className="w-24 h-24 gradient-green-400 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-12 w-12" />
             </div>
           </div>
         </div>
@@ -68,8 +73,9 @@ function ChallengeCompletion({
         />
 
         {/* Action Buttons */}
-        <Button onClick={handleContinue}
-        className='w-full gradient-box hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] text-lg'>
+        <Button 
+          onClick={handleContinue}
+          className='w-full gradient-orange hover:from-orange-500 hover:to-yellow-500 font-semibold py-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] text-lg'>
             Continue Challenges <ChevronRightIcon />
         </Button>
 
@@ -79,7 +85,7 @@ function ChallengeCompletion({
         </div>
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 

@@ -6,11 +6,13 @@ import ChallengeDetailPage from './pages/Challenge/ChallengeDetails/ChallengeDet
 import ChallengeCompletion from './pages/Challenge/ChallengeCompletion/ChallengeCompletion';
 import './App.css'
 import SignUpPage from "./pages/LogIn/SignUp";
+import { AnimatePresence } from "motion/react";
 
 function App() {
   return (
       <BrowserRouter>
         <div className="App min-h-screen">
+          <AnimatePresence mode="sync">
             <Routes>
               <Route index element={<LogInPage />} />
               <Route path="/login" element={<LogInPage />} />
@@ -20,6 +22,7 @@ function App() {
               <Route path="/congratulations" element={<CongratulationsWrapper />} />
               {/* <Route path="/daily" element={<Challenge />} /> */}
             </Routes>
+          </AnimatePresence>
         </div>
       </BrowserRouter>
   )

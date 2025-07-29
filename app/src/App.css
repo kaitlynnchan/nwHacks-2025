@@ -3,7 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center; */
-  background-image: linear-gradient(to bottom right, #fff7ed, #fefce8, #fdf2f8);
+  background-image: linear-gradient(to bottom right, 
+    var(--color-orange-50), var(--color-yellow-50), var(--color-pink-50));
 }
 
 .logo {
@@ -50,14 +51,29 @@
 
 .gradient-text {
   font-weight: bold;
-  background-image: linear-gradient(to right, #ea580c, #ca8a04);
+  background-image: linear-gradient(to right, var(--color-orange-600), var(--color-yellow-600));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
-.gradient-box {
-  background-image: linear-gradient(to bottom right, #fb923c, #facc15);
+.gradient-orange {
+  background-image: linear-gradient(to bottom right, var(--color-orange-400), var(--color-yellow-400));
   color: white;
+}
+
+.gradient-green-400 {
+  background-image: linear-gradient(to bottom right, var(--color-green-500), var(--color-emerald-400));
+  color: white;
+}
+
+.gradient-green-100 {
+  background-image: linear-gradient(to bottom right, var(--color-green-100), var(--color-emerald-100));
+  color: var(--color-green-800);
+}
+
+.gradient-green-50 {
+  background-image: linear-gradient(to bottom right, var(--color-green-50), var(--color-emerald-50));
+  color: var(--color-gray-900);
 }

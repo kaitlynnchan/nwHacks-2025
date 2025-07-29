@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from "react";
-import { Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,8 +50,12 @@ function LoginForm({
     >
       <div className="flex flex-col items-center gap-2 text-center">
         <div className="flex justify-center mb-4">
-          <div className="gradient-box p-4 rounded-2xl shadow-lg">
-            <Users size={32} className="text-white" />
+          <div className="gradient-orange p-2 rounded-2xl shadow-lg">
+            <img 
+              src="/connect-quest-logo.png" 
+              alt="Connect Quest Logo" 
+              className="w-12 h-12 object-contain" 
+            />
           </div>
         </div>
         
@@ -93,7 +96,7 @@ function LoginForm({
             onChange={(e) => setPassword(e.target.value)} 
           />
         </div>
-        <Button type="submit" className="w-full gradient-box hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12">
+        <Button type="submit" className="w-full gradient-orange hover:from-orange-500 hover:to-yellow-500 font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12">
           {mode === "login" ? "Let’s Get Going" : "Begin Your Quest"}
         </Button>
       </div>

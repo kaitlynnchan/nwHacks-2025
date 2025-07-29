@@ -1,6 +1,6 @@
 import { useUser } from "@/contexts/UserContext";
 import LoginForm from "@/pages/LogIn/LoginForm";
-import { fetchUser } from "@/services/api/userRoute";
+import { createUser } from "@/services/api/userRoute";
 import { useNavigate } from "react-router-dom";
 
 interface UserChallenge {
@@ -19,26 +19,26 @@ interface User {
   challenges: [UserChallenge]
 }
 
-function LogInPage() {
+function SignUpPage() {
   const navigate = useNavigate();
 
-  const {setUser} = useUser();
+  const { setUser } = useUser();
 
-  const handleLogInSubmit = async (email: string) => {
+  const handleSignUpSubmit = async (email: string) => {
     try {
-      const user: User = await fetchUser(email);
+      const user: User = await createUser(email);
       setUser(user.id, user.points);
       navigate("/challenges");
     } catch (err) {
-      alert('Email or password is incorrect');
+      alert('User already exists');
     }
   };
   
   return (
     <div className="min-h-screen flex-center p-6">
-      <LoginForm mode="login" onSubmitHandler={handleLogInSubmit}/>
+      <LoginForm mode="signup" onSubmitHandler={handleSignUpSubmit}/>
     </div>
   );
 }
 
-export default LogInPage;
+export default SignUpPage;

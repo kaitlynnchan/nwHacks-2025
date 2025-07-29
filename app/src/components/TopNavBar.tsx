@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, LogOut, Star, Users } from "lucide-react";
 
@@ -16,7 +15,7 @@ function TopNavBar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-orange-200/50 bg-white/90 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/80">
-      <div className="container mx-auto px-4">
+      <div className="px-4">
         <div className="flex h-16 items-center justify-between">
           
           
@@ -27,7 +26,7 @@ function TopNavBar() {
                 variant="ghost" 
                 size="icon" 
                 onClick={() => navigate(-1)}
-                className="hover:bg-orange-100/80 text-gray-600 hover:text-orange-600 transition-colors"
+                className="bg-orange-100/80 hover:bg-yellow-500 text-orange-600 hover:text-white transition-colors"
               >
                 <ArrowLeft size={20} />
               </Button>
@@ -37,7 +36,6 @@ function TopNavBar() {
             </div>
             
             <h1 className="text-xl gradient-text">
-            {/* <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent"> */}
               Connect Quest
             </h1>
           </div>
@@ -53,7 +51,7 @@ function TopNavBar() {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="hover:bg-orange-100/80 text-gray-600 hover:text-orange-600 transition-colors"
+              className="bg-orange-100/80 hover:bg-yellow-500 text-orange-600 hover:text-white transition-colors"
               onClick={() => handleLogOut()}
             >
               <LogOut size={20}/>

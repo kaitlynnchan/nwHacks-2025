@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface UserContextType {
   userId: string | null;
@@ -17,15 +17,19 @@ const UserContext = createContext<UserContextType>({
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [userPoints, setUserPoints] = useState<number | null>(null);
 
-  useEffect(() => {
-    const storedId = localStorage.getItem("userId");
+  const getUserId = () => {
+    return localStorage.getItem("userId");
+  }
+
+  const getUserPoints = (): number | null => {
     const storedPoints = localStorage.getItem("userPoints");
-    if (storedId) setUserId(storedId);
-    if (storedPoints) setUserPoints(Number(storedPoints));
-  }, []);
+    if (storedPoints) return Number(storedPoints);
+    return null;
+  }
+
+  const [userId, setUserId] = useState<string | null>(getUserId);
+  const [userPoints, setUserPoints] = useState<number | null>(getUserPoints);
 
   const setUser = (id: string, points: number) => {
     setUserId(id);

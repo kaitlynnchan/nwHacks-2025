@@ -21,6 +21,10 @@ connectDB();
 app.use('/api/', userRoutes);
 app.use('/api/', challengeRoutes);
 
+app.get('/', (req, res) => {
+    return res.status(200).json({ status: 'OK' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

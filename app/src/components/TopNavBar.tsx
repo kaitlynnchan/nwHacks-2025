@@ -1,12 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogOut, Star, Users } from "lucide-react";
+import { ArrowLeft, LogOut, Star } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { useUser } from "@/contexts/UserContext";
+import { useNavBar } from "@/contexts/NavBarContext";
 
 function TopNavBar() {
   const { userPoints } = useUser();
+  const { config } = useNavBar();
+  
   const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    if (config.backPath) {
+      navigate(config.backPath);
+    }
+  };
 
   const handleLogOut = () => {
     console.log("click logout")
@@ -21,17 +30,23 @@ function TopNavBar() {
           
           {/* Logo and App Name */}
           <div className="flex items-center gap-3">
-            <div className="flex items-right gap-1">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => navigate(-1)}
-                className="bg-orange-100/80 hover:bg-yellow-500 text-orange-600 hover:text-white transition-colors"
-              >
-                <ArrowLeft size={20} />
-              </Button>
-              <div className="gradient-box p-2 rounded-xl shadow-lg">
-                <Users size={24} className="text-white" />
+            <div className="flex items-right items-center gap-2">
+              {config.showBack && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => handleBackClick()}
+                  className="bg-orange-100/80 hover:bg-yellow-500 text-orange-600 hover:text-white transition-colors"
+                >
+                  <ArrowLeft size={20} />
+                </Button>
+              )}
+              <div className="gradient-orange p-2 rounded-xl shadow-lg">
+                <img 
+                  src="/connect-quest-logo.png" 
+                  alt="Connect Quest Logo" 
+                  className="w-8 h-8 object-contain" 
+                />
               </div>
             </div>
             
@@ -43,7 +58,7 @@ function TopNavBar() {
           <div className="flex items-center gap-3">
             {/* User Points */}
             <div className="flex items-center gap-1">
-              <Star size={16} className="text-orange-500 " />
+              <Star size={16} className="text-orange-500" />
               <p>{userPoints} pts</p>
             </div>
             

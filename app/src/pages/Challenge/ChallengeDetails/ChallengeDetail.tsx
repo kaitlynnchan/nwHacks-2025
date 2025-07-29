@@ -134,10 +134,10 @@ function ChallengeDetail() {
       
       {/* Main Content */}
       <div>
-        <Card className={`shadow-lg border-0 backdrop-blur-sm gap-1 py-4 transition-all duration-200 cursor-pointer
+        <Card className={`shadow-lg border-0 backdrop-blur-sm gap-1 py-4
           ${isCompleted 
-              ? 'bg-gradient-to-r from-green-50/90 to-emerald-50/90 hover:from-green-100/90 hover:to-emerald-100/90 border-green-200/50' 
-              : 'bg-white/80 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+              ? 'bg-gradient-to-r from-green-50/90 to-emerald-50/90 border-green-200/50' 
+              : 'bg-white/80'
             }
         `}>
           <CardHeader>

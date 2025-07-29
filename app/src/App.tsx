@@ -5,6 +5,7 @@ import Challenges from './pages/Challenge/ChallengesList/Challenges';
 import ChallengeDetailPage from './pages/Challenge/ChallengeDetails/ChallengeDetail';
 import ChallengeCompletion from './pages/Challenge/ChallengeCompletion/ChallengeCompletion';
 import './App.css'
+import SignUpPage from "./pages/LogIn/SignUp";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
             <Routes>
               <Route index element={<LogInPage />} />
               <Route path="/login" element={<LogInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
               <Route path="/challenges" element={<Challenges />} />
               <Route path="/challenges/:challengeId" element={<ChallengeDetailPage />} />
               <Route path="/congratulations" element={<CongratulationsWrapper />} />

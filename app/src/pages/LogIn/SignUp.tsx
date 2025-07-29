@@ -1,6 +1,7 @@
 import { useUser } from "@/contexts/UserContext";
 import LoginForm from "@/pages/LogIn/LoginForm";
 import { createUser } from "@/services/api/userRoute";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface UserChallenge {
@@ -20,23 +21,33 @@ interface User {
 }
 
 function SignUpPage() {
-  const navigate = useNavigate();
-
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const handleSignUpSubmit = async (email: string) => {
     try {
+      setError("");
+      setLoading(true);
       const user: User = await createUser(email);
       setUser(user.id, user.points);
       navigate("/challenges");
     } catch (err) {
-      alert('User already exists');
+      setError('Whoops, that email is already taken');
+    } finally {
+      setLoading(false);
     }
   };
   
   return (
     <div className="min-h-screen flex-center p-6">
-      <LoginForm mode="signup" onSubmitHandler={handleSignUpSubmit}/>
+      <LoginForm 
+        mode="signup" 
+        onSubmitHandler={handleSignUpSubmit}
+        error={error}
+        loading={loading}
+      />
     </div>
   );
 }

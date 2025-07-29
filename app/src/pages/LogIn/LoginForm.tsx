@@ -5,42 +5,27 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-interface UserChallenge {
-  id: string;
-  challengeId: string;
-  completed: boolean;
-  notes: string;
-  document: string;
-  completedAtTs: Date;
-}
-
-interface User {
-  id: string;
-  email: string;
-  points: number;
-  challenges: [UserChallenge]
-}
-
 interface LoginFormProps extends React.ComponentProps<"form"> {
   mode: "login" | "signup";
   onSubmitHandler: (email: string) => void;
+  error?: string;
+  loading?: boolean;
 }
 
 function LoginForm({
   className,
   mode,
   onSubmitHandler,
+  error,
+  loading = false,
   ...props
 }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
     onSubmitHandler(email);
-    setLoading(false);
   };
   
   return (
@@ -73,7 +58,14 @@ function LoginForm({
             : "Sign up with your email to get started"}
         </p>
       </div>
-        
+      
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-red-700 text-sm flex items-center gap-2">
+          <span>{error}</span>
+        </div>
+      )}
+
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
@@ -81,9 +73,10 @@ function LoginForm({
             className="bg-white" 
             id="email" 
             type="email" 
-            placeholder="m@email.com" 
+            placeholder="username@email.com" 
             required 
-            onChange={(e) => setEmail(e.target.value)} 
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
           />
         </div>
         <div className="grid gap-3">
@@ -93,10 +86,15 @@ function LoginForm({
             id="password" 
             type="password" 
             required 
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
         </div>
-        <Button type="submit" className="w-full gradient-orange hover:from-orange-500 hover:to-yellow-500 font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12">
+        <Button 
+          type="submit" 
+          disabled={loading}
+          className="w-full gradient-orange hover:from-orange-500 hover:to-yellow-500 font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-[1.02] h-12"
+        >
           {mode === "login" ? "Let’s Get Going" : "Begin Your Quest"}
         </Button>
       </div>

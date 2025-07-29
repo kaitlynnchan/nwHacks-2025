@@ -85,11 +85,6 @@ function ChallengeDetail() {
   }, [challengeId]);
 
   const handleSubmit = async (challengeId: string, pointsEarned: number) => {
-    if (!notes.trim()) {
-      alert('Please add some notes about what you accomplished!');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       if (challenge){

@@ -21,7 +21,6 @@ function LoginForm({
   ...props
 }: LoginFormProps) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,7 +85,6 @@ function LoginForm({
             id="password" 
             type="password" 
             required 
-            onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
           />
         </div>

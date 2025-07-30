@@ -67,12 +67,13 @@ function ChallengeDetail() {
 
     const getUserChallenge = async () => {
       try {
-        const userChallenge: UserChallenge = await fetchUserChallenge(userId!, challengeId!);
-        setUserChallenge(userChallenge);
+        const userChallengeResult: UserChallenge = await fetchUserChallenge(userId!, challengeId!);
+        setUserChallenge(userChallengeResult);
 
-        if (userChallenge) {
-          setNotes(userChallenge.notes);
+        if (userChallengeResult) {
+          setNotes(userChallengeResult.notes);
           setCompleted(true);
+          console.log(userChallenge);
         }
       } catch (err) {
         setCompleted(false);
@@ -84,11 +85,11 @@ function ChallengeDetail() {
     }
   }, [challengeId]);
 
-  const handleSubmit = async (challengeId: string, pointsEarned: number) => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
       if (challenge){
-        await linkChallengeToUser(userId!, challengeId, notes, '');
+        await linkChallengeToUser(userId!, challenge.id, notes, '');
         // update user points
         setUserPoints(userPoints! + challenge.points);
 
@@ -259,7 +260,7 @@ function ChallengeDetail() {
               </div>
             ) : (
               <Button 
-                onClick={() => handleSubmit(challenge.id, challenge.points)}
+                onClick={() => handleSubmit()}
                 disabled={isSubmitting || !notes.trim()}
                 className="w-full py-6 text-lg font-semibold gradient-orange shadow-lg hover:shadow-xl transition-all duration-200"
                 size="lg"

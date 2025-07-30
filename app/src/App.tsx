@@ -10,7 +10,7 @@ import { AnimatePresence } from "motion/react";
 
 function App() {
   return (
-      <BrowserRouter>
+      <BrowserRouter basename="/nwHacks-2025">
         <div className="App min-h-screen">
           <AnimatePresence mode="sync">
             <Routes>

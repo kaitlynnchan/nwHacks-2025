@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://connect-quest.us-west-2.elasticbeanstalk.com/api';
 
 export const createUser = async (email: string) => {
   return await axios.post(`${API_URL}/users/`, {email})

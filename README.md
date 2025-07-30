@@ -1,38 +1,25 @@
 # Connect Quest
-Connect Quest is a gamified social app that encourages students to make new connections and explore their community.
+Connect Quest is a gamified social app that encourages students to make new connections and explore their community. Challenges are created daily and users must add notes to complete the challenge. Once a user completes a challenge they are awarded points.
 
-# Tech Stack
+## Tech Stack
 Frontend
 - React + TypeScript
+- Vite
 
 Backend
 - NodeJS + JavaScript
 - MongoDB
+- AWS
 
-## How to run the App
-
-### Run the Web App in development mode
-``` bash
-$ cd app
-
-$ npm install
-
-$ npm run dev
-```
-
-### Run the backend server in development mode
-``` bash
-$ cd backend
-
-$ npm install
-
-$ npm run dev
-```
+## Project Structure
+- app: frontend ui
+- backend: API and database
 
 
 # Future Implementations
 - user authentication
 - AI generated challenges
+- image submition for challenge completion verification
 - email notifications of new challenges
 - friends leaderboard
 - location based challenge prompts

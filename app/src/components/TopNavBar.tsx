@@ -43,7 +43,7 @@ function TopNavBar() {
               )}
               <div className="gradient-orange p-2 rounded-xl shadow-lg">
                 <img 
-                  src="/connect-quest-logo.png" 
+                  src="/nwHacks-2025/connect-quest-logo.png" 
                   alt="Connect Quest Logo" 
                   className="w-8 h-8 object-contain" 
                 />

@@ -36,7 +36,7 @@ function LoginForm({
         <div className="flex justify-center mb-4">
           <div className="gradient-orange p-2 rounded-2xl shadow-lg">
             <img 
-              src="/connect-quest-logo.png" 
+              src="/nwHacks-2025/connect-quest-logo.png" 
               alt="Connect Quest Logo" 
               className="w-12 h-12 object-contain" 
             />

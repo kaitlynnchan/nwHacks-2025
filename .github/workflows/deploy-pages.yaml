@@ -27,19 +27,15 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [22.x, 20.x]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: lts/*
           cache: 'npm'
           cache-dependency-path: ./app/package-lock.json
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = `http://connect-quest.us-west-2.elasticbeanstalk.com/api`;
+const API_URL = 'https://api.connectquest.online/api';
 
 export const fetchChallenges = async () => {
   return await axios.get(`${API_URL}/challenges`)

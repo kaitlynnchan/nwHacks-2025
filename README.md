@@ -12,7 +12,7 @@ Backend
 - AWS
 
 ## Project Structure
-- app: frontend ui
+- frontend: frontend ui/ux
 - backend: API and database
 
 

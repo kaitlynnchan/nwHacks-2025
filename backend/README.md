@@ -1,5 +1,5 @@
 # Connect Quest Service
-This service contains the API for managing Users and Challenges data.
+This service contains the API for managing Users and Challenges data. 
 
 ## Tech Stack
 - NodeJS (v20+)

@@ -29,5 +29,6 @@ jobs:
           application_name: connect-quest
           environment_name: connect-quest-dev
           version_label: ${{ github.sha }}
+          version_description: Github Actions Deploy
           region: us-west-2
           deployment_package: ./backend/deploy.zip

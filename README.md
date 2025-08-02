@@ -12,8 +12,9 @@ Backend
 - AWS
 
 ## Project Structure
-- app: frontend ui
-- backend: API and database
+- `frontend/`: frontend ui/ux
+- `backend/`: API and database
+- `.github/workflows`: github actions workflow to automate jobs
 
 
 # Future Implementations

@@ -54,8 +54,37 @@ docker build -t connect-quest-app .
 docker run -p 3000:3000 --env-file .env connect-quest-app
 ```
 
-# Deploying the API to AWS
-Ensure you have the AWS Beanstalk CLI installed.
+# Deploy API to AWS
+
+### Github Actions Workflow
+This process is automated with github actions. The `aws-elastic-beanstalk.yaml` workflow deploys any merged changes to main on the backend directory.
+
+### Manual Run
+1. Install AWS Beanstalk CLI.
+1. Use AWS Beanstalk credentials to authenticate via the terminal
+1. Deploy the service
+    ```
+    eb deploy
+    ```
+
+# Manual Run Scripts
+
+### Add Random Challenge Script
+Chooses a random challenge from a predefined list of challenges and makes an api call to create the challenge in the database. The `challenge-cron-job.yaml` github workflow runs the script daily on github actions.
+
+```bash
+# Run the script in development mode on localhost
+# Must use the --dev_mode flag
+# port does not need to be specified, it is set to 3000 by default
+python scripts/add_random_challenge.py --dev_mode --port=3000
+
+# Run the script on the production api service
+# port is not needed
+python scripts/add_random_challenge.py --api_url_prod='api-prod-url'
 ```
-eb deploy
-```
+
+`--dev-mode`: flag to run in development mode using localhost api
+
+`--port`: specify port for development api, set to 3000 by default
+
+`--api_url_prod`: specify production api

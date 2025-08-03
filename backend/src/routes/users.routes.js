@@ -6,18 +6,19 @@ const {
     getUserChallenge, 
     getUserChallenges
 } = require('../controllers/users.controller')
+const { verifySupabaseToken } = require('../middleware/supabase')
 
 const router = express.Router();
 
 router.post('/users', createUser);
 
-router.get('/users/:userId', getUser);
+router.get('/users/:userId', verifySupabaseToken, getUser);
 
-router.post('/users/:userId/challenge/:challengeId', linkChallengeToUser);
+router.post('/users/:userId/challenge/:challengeId', verifySupabaseToken, linkChallengeToUser);
 
-router.get('/users/:userId/challenges', getUserChallenges);
+router.get('/users/:userId/challenges', verifySupabaseToken, getUserChallenges);
 
-router.get('/users/:userId/challenge/:challengeId', getUserChallenge);
+router.get('/users/:userId/challenge/:challengeId', verifySupabaseToken, getUserChallenge);
 
 // update user challenge
 // router.put('/users/:userId/challenge/:challengeId', );

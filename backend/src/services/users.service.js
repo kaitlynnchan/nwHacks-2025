@@ -1,7 +1,8 @@
 const { User, UserChallenge } = require('../models/users.model');
 
-const createUserDb = async (email) => {
+const createUserDb = async (userId, email) => {
     const newUser = new User({
+        id: userId,
         email: email
     });
     await newUser.save();
@@ -9,11 +10,11 @@ const createUserDb = async (email) => {
 }
 
 const getUserDb = async ({
-    email,
-    userId
+    userId,
+    email
 }) => {
     if (userId) {
-        return await User.findById(userId);
+        return await User.findOne({ id: userId });
     } else if (email) {
         return await User.findOne({ email: email });
     }
@@ -40,7 +41,7 @@ const createUserChallenge = async ({user, userChallenge, points}) => {
 
 const getUserChallengeDb = async (userId, challengeId) => {
     const result = await User.findOne(
-        { _id: userId, 'challenges.challengeId': challengeId },
+        { id: userId, 'challenges.challengeId': challengeId },
         { 'challenges.$': 1 } // only matching 1 element
     );
     return result.challenges[0];

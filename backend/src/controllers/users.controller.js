@@ -8,10 +8,10 @@ const {
 
 const createUser = async (req, res) => {
     try {
-        const { email } = req.body;
-        const newUser = await createUserDb(email);
+        const { userId, email } = req.body;
+        const newUser = await createUserDb(userId, email);
         return res.status(201).json({
-            id: newUser._id,
+            id: newUser.id,
             email: newUser.email,
             points: newUser.points,
             challenges: newUser.challenges.map(uc => ({
@@ -30,12 +30,12 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const { email } = req.params;
-        const user = await getUserDb({email:email});
+        const { userId } = req.params;
+        const user = await getUserDb({ userId: userId });
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
         return res.status(200).json({
-            id: user._id,
+            id: user.id,
             email: user.email,
             points: user.points,
             challenges: user.challenges.map(uc => ({

@@ -1,8 +1,8 @@
 import { useUser } from "@/contexts/UserContext";
 import LoginForm from "@/pages/LogIn/LoginForm";
-import { createUser } from "@/services/api/userRoute";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUser } from "@/services/api/userRoute";
 
 interface UserChallenge {
   id: string;
@@ -26,11 +26,11 @@ function SignUpPage() {
   const { setUser } = useUser();
   const navigate = useNavigate();
 
-  const handleSignUpSubmit = async (email: string) => {
+  const handleSignUpSubmit = async (email: string, password: string) => {
     try {
       setError("");
       setLoading(true);
-      const user: User = await createUser(email);
+      const user: User = await createUser(email, password);
       setUser(user.id, user.points);
       navigate("/challenges");
     } catch (err) {

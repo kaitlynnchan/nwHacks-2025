@@ -10,9 +10,11 @@ const userChallengeSchema = new mongoose.Schema({
 const UserChallenge = mongoose.model('UserChallenge', userChallengeSchema);
 
 const userSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true},
     points: { type: Number, default: 0 },
-    challenges: [ userChallengeSchema ]
+    challenges: [ userChallengeSchema ],
+    createdAtTs: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', userSchema);
 

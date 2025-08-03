@@ -28,11 +28,12 @@ function LogInPage() {
   const navigate = useNavigate();
 
 
-  const handleLogInSubmit = async (email: string) => {
+  const handleLogInSubmit = async (email: string, password: string) => {
     try {
       setError("");
       setLoading(true);
-      const user: User = await fetchUser(email);
+      const user: User = await fetchUser(email, password);
+      console.log(user)
       setUser(user.id, user.points);
       navigate("/challenges");
     } catch (err) {

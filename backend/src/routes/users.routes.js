@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post('/users', createUser);
 
-router.get('/users/:email', getUser);
+router.get('/users/:userId', getUser);
 
 router.post('/users/:userId/challenge/:challengeId', linkChallengeToUser);
 

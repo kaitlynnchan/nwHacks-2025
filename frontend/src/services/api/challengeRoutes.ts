@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.connectquest.online/api';
+const API_URL = import.meta.env.VITE_API_URL + '/api';
 
 export const fetchChallenges = async () => {
   return await axios.get(`${API_URL}/challenges`)

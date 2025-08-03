@@ -4,22 +4,6 @@ import { fetchUser } from "@/services/api/userRoute";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface UserChallenge {
-  id: string;
-  challengeId: string;
-  completed: boolean;
-  notes: string;
-  document: string;
-  completedAtTs: Date;
-}
-
-interface User {
-  id: string;
-  email: string;
-  points: number;
-  challenges: [UserChallenge]
-}
-
 function LogInPage() {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,9 +16,8 @@ function LogInPage() {
     try {
       setError("");
       setLoading(true);
-      const user: User = await fetchUser(email, password);
-      console.log(user)
-      setUser(user.id, user.points);
+      const user = await fetchUser(email, password);
+      setUser(user.id, user.points, user.accessToken);
       navigate("/challenges");
     } catch (err) {
       setError('Email or password is incorrect');

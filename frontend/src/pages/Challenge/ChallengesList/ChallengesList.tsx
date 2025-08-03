@@ -9,19 +9,7 @@ import { fetchUserChallenges } from "@/services/api/userRoute";
 import { useUser } from "@/contexts/UserContext";
 import Loading from "@/components/Loading";
 import ErrorMessage from "@/components/Error";
-
-interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  points: number;
-  completed: boolean;
-}
-
-interface UserChallenge {
-  challengeId: string;
-  completed: boolean;
-}
+import type { Challenge, UserChallenge } from "@/types/types";
 
 const ChallengesList = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -29,13 +17,13 @@ const ChallengesList = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { userId } = useUser();
+  const { userId, userAccessToken } = useUser();
 
   useEffect(() => {
     const getChallenges = async () => {
       try {
-        const allChallenges: Challenge[] = await fetchChallenges();
-        const userChallenges: UserChallenge[] = await fetchUserChallenges(userId!);
+        const allChallenges = await fetchChallenges();
+        const userChallenges = await fetchUserChallenges(userId!, userAccessToken!);
         
         const completedSet = new Set(
           userChallenges

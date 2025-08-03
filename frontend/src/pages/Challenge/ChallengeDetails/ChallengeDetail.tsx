@@ -15,29 +15,11 @@ import Loading from '@/components/Loading';
 import ErrorMessage from '@/components/Error';
 import { motion } from 'motion/react';
 import { useNavBar } from '@/contexts/NavBarContext';
-
-interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  points: number;
-  difficulty?: string;
-  category?: string;
-  estimatedTime?: string;
-  requirements: string[];
-}
-
-interface UserChallenge {
-  id: string;
-  challengeId: string;
-  completed: boolean;
-  notes: string;
-  completedAt: string;
-}
+import type { Challenge, UserChallenge } from '@/types/types';
 
 function ChallengeDetail() {
   const { challengeId } = useParams<{ challengeId: string }>();
-  const { userId, userPoints, setUserPoints } = useUser();
+  const { userId, userAccessToken, userPoints, setUserPoints } = useUser();
   
   const [challenge, setChallenge] = useState<Challenge>();
   const [userChallenge, setUserChallenge] = useState<UserChallenge | null>(null);
@@ -55,7 +37,7 @@ function ChallengeDetail() {
       try {
         setLoading(true);
 
-        const challenge: Challenge = await fetchChallenge(challengeId!);
+        const challenge = await fetchChallenge(challengeId!);
         setChallenge(challenge);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load challenge');
@@ -67,7 +49,7 @@ function ChallengeDetail() {
 
     const getUserChallenge = async () => {
       try {
-        const userChallengeResult: UserChallenge = await fetchUserChallenge(userId!, challengeId!);
+        const userChallengeResult = await fetchUserChallenge(userId!, challengeId!, userAccessToken!);
         setUserChallenge(userChallengeResult);
 
         if (userChallengeResult) {
@@ -89,7 +71,7 @@ function ChallengeDetail() {
     setIsSubmitting(true);
     try {
       if (challenge){
-        await linkChallengeToUser(userId!, challenge.id, notes, '');
+        await linkChallengeToUser(userId!, challenge.id, notes, '', userAccessToken!);
         // update user points
         setUserPoints(userPoints! + challenge.points);
 

@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { signUpNewUser, signInWithEmail } from "@/services/supabase/client";
+import type { User, UserChallenge } from '@/types/types';
 
 const API_URL = import.meta.env.VITE_API_URL + '/api';
 
-export const createUser = async (email: string, password: string) => {
+export const createUser = async (
+  email: string, 
+  password: string
+): Promise<User> => {
   try {
     const supabaseUser = await signUpNewUser(email, password);
 
@@ -24,16 +28,19 @@ export const createUser = async (email: string, password: string) => {
     }
   }
 };
-// { 
-//         headers: {
-//           Authorization: accessToken
-//         } 
-//       }
-export const fetchUser = async (email: string, password: string) => {
+
+export const fetchUser = async (
+  email: string, 
+  password: string
+): Promise<User> => {
   try {
     const { userId, accessToken } = await signInWithEmail(email, password);
 
-    return await axios.get(`${API_URL}/users/${userId}`)
+    const response: User = await axios.get(`${API_URL}/users/${userId}`, { 
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        } 
+      })
       .then((res) => {
         console.log(res)
         return res.data;
@@ -41,6 +48,14 @@ export const fetchUser = async (email: string, password: string) => {
         console.log(err)
         throw new Error(err!.response!.data?.error || "Failed to fetch user");
       });
+
+    return {
+      id: response.id,
+      email: response.email,
+      points: response.points,
+      challenges: response.challenges,
+      accessToken: accessToken
+    };
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -54,13 +69,19 @@ export const linkChallengeToUser = async (
   userId: string, 
   challengeId: string, 
   notes: string, 
-  document: string
-) => {
+  document: string,
+  userAccessToken: string
+): Promise<UserChallenge> => {
   return await axios.post(`${API_URL}/users/${userId}/challenge/${challengeId}`, {
       completed: true,
       notes: notes,
       document: document,
-      completedAtTs: Date.now()
+      completedAtTs: Date.now(),      
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${userAccessToken}`
+      }
     })
     .then((res) => {
       return res.data;
@@ -69,8 +90,15 @@ export const linkChallengeToUser = async (
     });
 };
 
-export const fetchUserChallenges = async (userId: string) => {
-  return await axios.get(`${API_URL}/users/${userId}/challenges`)
+export const fetchUserChallenges = async (
+  userId: string, 
+  userAccessToken: string
+): Promise<UserChallenge[]> => {
+  return await axios.get(`${API_URL}/users/${userId}/challenges`, {
+      headers: {
+        Authorization: `Bearer ${userAccessToken}`
+      }
+    })
     .then((res) => {
       return res.data;
     }).catch((err) => {
@@ -78,8 +106,16 @@ export const fetchUserChallenges = async (userId: string) => {
     });
 }
 
-export const fetchUserChallenge = async (userId: string, challengeId: string) => {
-  return await axios.get(`${API_URL}/users/${userId}/challenge/${challengeId}`)
+export const fetchUserChallenge = async (
+  userId: string, 
+  challengeId: string,
+  userAccessToken: string
+): Promise<UserChallenge> => {
+  return await axios.get(`${API_URL}/users/${userId}/challenge/${challengeId}`, {
+      headers: {
+        Authorization: `Bearer ${userAccessToken}`
+      }
+    })
     .then((res) => {
       return res.data;
     }).catch((err) => {

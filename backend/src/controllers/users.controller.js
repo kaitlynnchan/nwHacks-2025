@@ -9,9 +9,9 @@ const {
 const createUser = async (req, res) => {
     try {
         const { userId, email } = req.body;
-        const newUser = await createUserDb(userId, email);
+        const newUser = await createUserDb({ userId: userId, email: email});
         return res.status(201).json({
-            id: newUser.id,
+            id: newUser._id,
             email: newUser.email,
             points: newUser.points,
             challenges: newUser.challenges.map(uc => ({
@@ -35,7 +35,7 @@ const getUser = async (req, res) => {
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
         return res.status(200).json({
-            id: user.id,
+            id: user._id,
             email: user.email,
             points: user.points,
             challenges: user.challenges.map(uc => ({
@@ -57,7 +57,7 @@ const linkChallengeToUser = async (req, res) => {
         const { userId, challengeId } = req.params;
         const { completed, notes, document, completedAtTs } = req.body;
 
-        const user = await getUserDb({userId: userId});
+        const user = await getUserDb({ userId: userId });
         const challenge = await getChallengeDb(challengeId);
         if (!user || !challenge) {
             return res.status(404).json({ error: "User or Challenge not found" });
@@ -98,7 +98,10 @@ const linkChallengeToUser = async (req, res) => {
 const getUserChallenge = async (req, res) => {
     try {
         const { userId, challengeId } = req.params;
-        const userChallenge = await getUserChallengeDb(userId, challengeId);
+        const userChallenge = await getUserChallengeDb({ 
+            userId: userId, 
+            challengeId: challengeId
+        });
         if (!userChallenge) {
             return res.status(404).json({ error: "User Challenge relationship not found" });
         }
@@ -118,7 +121,7 @@ const getUserChallenge = async (req, res) => {
 const getUserChallenges = async (req, res) => {
     try {
         const { userId } = req.params;
-        const user = await getUserDb({userId: userId});
+        const user = await getUserDb({ userId: userId });
         return res.status(200).json(user.challenges.map(uc => ({
             id: uc._id,
             challengeId: uc.challengeId,

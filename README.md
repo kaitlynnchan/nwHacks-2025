@@ -5,6 +5,7 @@ Connect Quest is a gamified social app that encourages students to make new conn
 Frontend
 - React + TypeScript
 - Vite
+- Supabase Auth
 
 Backend
 - NodeJS + JavaScript

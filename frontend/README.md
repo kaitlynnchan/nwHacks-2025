@@ -5,7 +5,8 @@ This service contains the UI/UX for the Connect Quest Web app. This project was 
 ## Tech Stack
 - React
 - TypeScript
-- Shadcn
+- Shadcn + Tailwind
+- Supabase Auth
 
 ## Project Structure
 ```

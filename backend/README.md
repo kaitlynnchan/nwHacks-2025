@@ -5,14 +5,16 @@ This service contains the API for managing Users and Challenges data.
 - NodeJS (v20+)
 - Express.JS
 - MongoDB
+- Supabase Auth
 
 ## Project Structure
 ```
 backend
 ├── config/             # environment configurations
-├── scripts/    
+├── scripts/            # contains any scripts
 ├── src/        
-│   ├── controllers/    # contains any scripts
+│   ├── controllers/
+│   ├── middleware/     # middleware for endpoints
 │   ├── models/         # database models
 │   ├── routes/         # api endpoints
 │   ├── services/       # database transactions
@@ -73,6 +75,9 @@ This process is automated with github actions. The `aws-elastic-beanstalk.yaml` 
 Chooses a random challenge from a predefined list of challenges and makes an api call to create the challenge in the database. The `challenge-cron-job.yaml` github workflow runs the script daily on github actions.
 
 ```bash
+# install the dependencies
+pip install scripts/requirements.txt
+
 # Run the script in development mode on localhost
 # Must use the --dev_mode flag
 # port does not need to be specified, it is set to 3000 by default

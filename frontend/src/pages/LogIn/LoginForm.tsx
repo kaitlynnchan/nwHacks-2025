@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 interface LoginFormProps extends React.ComponentProps<"form"> {
   mode: "login" | "signup";
-  onSubmitHandler: (email: string) => void;
+  onSubmitHandler: (email: string, password: string) => void;
   error?: string;
   loading?: boolean;
 }
@@ -21,10 +21,11 @@ function LoginForm({
   ...props
 }: LoginFormProps) {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmitHandler(email);
+    onSubmitHandler(email, password);
   };
   
   return (
@@ -85,6 +86,7 @@ function LoginForm({
             id="password" 
             type="password" 
             required 
+            onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
           />
         </div>

@@ -15,6 +15,7 @@
 		"dotenv": "^17.2.1",
 		"dotenv-cli": "^9.0.0",
 		"express": "^4.17.1",
+		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.9.5",
 		"node-cron": "^3.0.3"
 	}

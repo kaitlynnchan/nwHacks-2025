@@ -1,27 +1,20 @@
+const { default: mongoose } = require('mongoose');
 const { User, UserChallenge } = require('../models/users.model');
 
-const createUserDb = async (email) => {
+const createUserDb = async ({ userId, email }) => {
     const newUser = new User({
+        _id: userId,
         email: email
     });
     await newUser.save();
     return newUser;
 }
 
-const getUserDb = async ({
-    email,
-    userId
-}) => {
-    if (userId) {
-        return await User.findById(userId);
-    } else if (email) {
-        return await User.findOne({ email: email });
-    }
-    return null;
-    
+const getUserDb = async ({ userId }) => {
+    return await User.findById(userId);
 }
 
-const createUserChallenge = async ({user, userChallenge, points}) => {
+const createUserChallenge = async ({ user, userChallenge, points }) => {
     const newUserChallenge = new UserChallenge({
         challengeId: userChallenge.challengeId,
         completed: userChallenge.completed,
@@ -38,7 +31,7 @@ const createUserChallenge = async ({user, userChallenge, points}) => {
     };
 };
 
-const getUserChallengeDb = async (userId, challengeId) => {
+const getUserChallengeDb = async ({ userId, challengeId }) => {
     const result = await User.findOne(
         { _id: userId, 'challenges.challengeId': challengeId },
         { 'challenges.$': 1 } // only matching 1 element

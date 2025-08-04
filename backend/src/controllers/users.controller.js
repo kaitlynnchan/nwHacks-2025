@@ -31,6 +31,10 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const { userId } = req.params;
+        if (req.user?.id !== userId) {
+            return res.status(403).json({ error: 'User not authorized to access' });
+        }
+
         const user = await getUserDb({ userId: userId });
         if (!user) 
             return res.status(404).json({ error: 'User not found' });
@@ -55,6 +59,10 @@ const getUser = async (req, res) => {
 const linkChallengeToUser = async (req, res) => {
     try {
         const { userId, challengeId } = req.params;
+        if (req.user?.id !== userId) {
+            return res.status(403).json({ error: 'User not authorized to access' });
+        }
+
         const { completed, notes, document, completedAtTs } = req.body;
 
         const user = await getUserDb({ userId: userId });
@@ -98,6 +106,10 @@ const linkChallengeToUser = async (req, res) => {
 const getUserChallenge = async (req, res) => {
     try {
         const { userId, challengeId } = req.params;
+        if (req.user?.id !== userId) {
+            return res.status(403).json({ error: 'User not authorized to access' });
+        }
+
         const userChallenge = await getUserChallengeDb({ 
             userId: userId, 
             challengeId: challengeId
@@ -121,6 +133,10 @@ const getUserChallenge = async (req, res) => {
 const getUserChallenges = async (req, res) => {
     try {
         const { userId } = req.params;
+        if (req.user?.id !== userId) {
+            return res.status(403).json({ error: 'User not authorized to access' });
+        }
+
         const user = await getUserDb({ userId: userId });
         return res.status(200).json(user.challenges.map(uc => ({
             id: uc._id,

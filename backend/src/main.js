@@ -5,7 +5,7 @@ const cors = require('cors');
 const connectDB = require('./database');
 const { router: userRoutes } = require('./routes/users.routes');
 const { router: challengeRoutes } = require('./routes/challenges.routes');
-const { PORT } = require('../config/config')
+const { PORT, NODE_ENV } = require('../config/config')
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 
-if (process.env.NODE_ENV !== 'test') {
+if (NODE_ENV !== 'test') {
     connectDB();
     
     app.listen(PORT, () => {

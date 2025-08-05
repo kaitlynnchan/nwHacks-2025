@@ -31,5 +31,4 @@ jobs:
       - name: Run script
         env:
             API_URL_PROD: ${{ secrets.API_URL_PROD }}
-        run: |
-          python scripts/add_random_challenge.py
+        run: python scripts/add_random_challenge.py

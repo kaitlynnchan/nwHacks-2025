@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-
-const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
+const { SUPABASE_JWT_SECRET } = require('../../config/config');
 
 const verifySupabaseToken = async (req, res, next) => {
     const authHeader = req.headers.authorization;

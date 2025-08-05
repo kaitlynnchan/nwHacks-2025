@@ -56,7 +56,15 @@ describe('Challenge Routes', () => {
     });
 
     it('get latest challenge', async () => {
-        await Challenge.create([challenge1, challenge2]);
+        await Challenge.create([
+        {
+            ...challenge1,
+            createdAt: '2025/08/03'
+        }, 
+        {
+            ...challenge2,
+            createdAt: '2025/08/04'
+        }]);
 
         const res = await request(app)
             .get('/api/challenges/latest');

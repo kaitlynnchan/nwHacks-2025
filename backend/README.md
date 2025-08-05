@@ -20,6 +20,10 @@ backend
 │   ├── services/       # database transactions
 │   ├── database.js     # database configuration
 │   ├── main.js         # app configuration 
+├── tests/        
+│   ├── integration/    # integration tests for routes
+│   ├── supabase.js     # generate auhorization token
+│   ├── db-handler.js   # local database configuration for tests
 ├── .env                # environment variables
 └── Dockerfile          # containerized environment
 ```
@@ -40,6 +44,7 @@ backend
     MONGO_DB_HOST=******
     MONGO_DB_APP_NAME=******
     DEV_MODE=true
+    SUPABASE_JWT_SECRET=******
     ```
 
 ### Running dev mode
@@ -54,6 +59,12 @@ docker build -t connect-quest-app .
 
 # run docker container with PORT 3000
 docker run -p 3000:3000 --env-file .env connect-quest-app
+```
+
+### Running integration tests on API routes
+Integration tests are run on a mongodb database configured in memory. Authorization token is generated locally.
+```bash
+npm run test
 ```
 
 # Deploy API to AWS

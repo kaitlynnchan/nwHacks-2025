@@ -1,6 +1,6 @@
 # Connect Quest Frontend
 
-This service contains the UI/UX for the Connect Quest Web app. This project was made for a mobile screen.
+This service contains the UI/UX for the Connect Quest Web app. This project was made for a mobile screen. 
 
 ## Tech Stack
 - React

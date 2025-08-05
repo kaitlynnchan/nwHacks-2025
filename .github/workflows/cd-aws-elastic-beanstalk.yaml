@@ -49,6 +49,8 @@ jobs:
         run: npm install
 
       - name: Run Jest tests
+        env:
+            SUPABASE_JWT_SECRET: ${{ secrets.SUPABASE_JWT_SECRET }}
         run: npm test
 
   deploy:
